@@ -16,7 +16,7 @@ namespace ChatMessenger
         static void Main(string[] args)
         {
             Method1();
-            Console.WriteLine("login");
+            Console.WriteLine("login commit2");
         }
 
         static void Method1()
