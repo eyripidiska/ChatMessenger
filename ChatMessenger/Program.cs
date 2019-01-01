@@ -7,6 +7,7 @@ using Dapper;
 using System.Data;
 using System.Data.SqlClient;
 using System.Security;
+using System.Security.Cryptography;
 
 namespace ChatMessenger
 {
@@ -44,7 +45,10 @@ namespace ChatMessenger
                         if (username == u.username)
                         {
                             string correctPassword = u.pass;
-                            found = PasswordMethod(correctPassword);
+                            int salt = u.salt;
+                            //close connection
+                            dbcon.Close();
+                            found = PasswordMethod(correctPassword, salt);
                             Console.WriteLine("you are enter in");
                             ApplicationMethod();
                         }
@@ -61,7 +65,8 @@ namespace ChatMessenger
         }
 
 
-        static bool PasswordMethod(string correctPassword)
+
+        static bool PasswordMethod(string correctPassword, int salt)
         {
             Console.WriteLine("maskpassword");
             bool check = false;
@@ -89,7 +94,27 @@ namespace ChatMessenger
                 }
                 while (keyInfo.Key != ConsoleKey.Enter);
                 Console.WriteLine("\n");
-                if (password != correctPassword)
+                string encryptedPassword = salt.ToString() + password;
+
+                // step 1, calculate MD5 hash from input
+                MD5 md5 = System.Security.Cryptography.MD5.Create();
+
+                byte[] inputBytes = System.Text.Encoding.ASCII.GetBytes(encryptedPassword);
+
+                byte[] hash = md5.ComputeHash(inputBytes);
+
+                // step 2, convert byte array to hex string
+                StringBuilder sb = new StringBuilder();
+
+                for (int i = 0; i < hash.Length; i++)
+
+                {
+
+                    sb.Append(hash[i].ToString("X2"));
+
+                }
+                string finallypassword = sb.ToString();
+                if (finallypassword != correctPassword)
                 {
                     Console.WriteLine("Incorrect password try again");
                     password = "";
@@ -103,11 +128,14 @@ namespace ChatMessenger
             return check;
         }
 
+
+
         static void DatabaseMethod()
         {
 
         }
         
+
 
         static void ApplicationMethod()
         {
