@@ -251,8 +251,95 @@ namespace ChatMessenger
 
         static void UpdateMethod()
         {
+            string Case = "c";
+            string password1 = "";
+            string password2 = "";
+            string newUsername = "";
+            bool foundUser = false;
+            string username = "";
+            SqlConnection dbcon = new SqlConnection(connectionString);
+            SqlConnection dbcon2 = new SqlConnection(connectionString);
+            Console.Write("Type the name who want to update: ");
+            username = Console.ReadLine();
+            using (dbcon)
+            {
+                dbcon.Open();
+                var user = dbcon.Query("select * from users");
 
+                while (foundUser == false)
+                {
+                    foreach (var u in user)
+                    {
+                        if (username == u.username)
+                        {
+                            foundUser = true;
+                        }
+                    }
+                    if (foundUser == false)
+                    {
+                        Console.WriteLine("The name doesnt fount");
+                        Console.Write("Type the name who want to update: ");
+                        username = Console.ReadLine();
+                    }
+                }
+            }
+            Console.WriteLine("\n");
+            Console.WriteLine("for username type a");
+            Console.WriteLine("for password type b");
+            Console.Write("Type the field who want to update: ");
+            while (Case == "c")
+            {
+                switch (Console.ReadLine())
+                {
+                    case "a":
+                        Console.Write("Type the new username: ");
+                        newUsername = Console.ReadLine();
+                        Case = "a";
+                        break;
+                    case "b":
+                        bool check = false;
+                        while (check == false)
+                        {
+                            Console.Write("Type the new password: ");
+                            password1 = MaskMethod();
+                            Console.WriteLine("\n");
+                            Console.Write("Repeat the new password: ");
+                            password2 = MaskMethod();
+                            if (password1 == password2)
+                            {
+                                check = true;
+                            }
+                            else
+                            {
+                                Console.WriteLine("the passwords doesn't match");
+                            }
+                        }
+                        Case = "b";
+                        break;
+                    default:
+                        Console.WriteLine("That is an incorrect option entry, please try again.");
+                        break;
+                }
+            }
+            Console.WriteLine("\n");
+            using (dbcon2)
+            {
+                dbcon2.Open();
+                var parameters = new DynamicParameters();
+                parameters.Add("username", username);
+                if (Case == "a")
+                {
+                    parameters.Add("newUsername", newUsername);
+                    var affectedRows = dbcon2.Execute("Update_Users_By_Username", parameters, commandType: CommandType.StoredProcedure);
+                    Console.WriteLine($"{affectedRows} Affected Rows");
+                }
+                else if (Case == "b")
+                {
+                    parameters.Add("newPassword", password1);
+                    var affectedRows = dbcon2.Execute("Update_Users_By_Password", parameters, commandType: CommandType.StoredProcedure);
+                    Console.WriteLine($"{affectedRows} Affected Rows");
+                }
+            }
         }
-        
     }
 }
