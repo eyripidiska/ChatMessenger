@@ -1,11 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using Dapper;
-using System.Data;
-using System.Data.SqlClient;
 
 namespace ChatMessenger
 {
@@ -18,9 +12,10 @@ namespace ChatMessenger
             {
                 Console.WriteLine("------------------------------------------------------");
                 Console.WriteLine("To create a user press {a}");
-                Console.WriteLine("To view a user press {b}");
+                Console.WriteLine("To view the users press {b}");
                 Console.WriteLine("To delete a user press {c}");
-                Console.WriteLine("To update a user press {d}");
+                Console.WriteLine("To update a user password press {d}");
+                Console.WriteLine("To update a user role press {e}");
                 Console.Write("\n");
                 Console.Write("Press a letter: ");
 
@@ -36,7 +31,10 @@ namespace ChatMessenger
                         DeleteMethod();
                         break;
                     case "d":
-                        UpdateMethod();
+                        UpdatePasswordMethod();
+                        break;
+                    case "e":
+                        UpdateRoleMethod();
                         break;
                     // Return text for an incorrect option entry
                     default:
@@ -96,9 +94,8 @@ namespace ChatMessenger
 
 
 
-        static void UpdateMethod()
+        static void UpdatePasswordMethod()
         {
-            char Case = 'c';
             string cmd = "select * from users";
             Console.Write("Type the username you want to update: ");
             string username = Console.ReadLine();
@@ -106,28 +103,28 @@ namespace ChatMessenger
             bool UserExist = LoginScreen.CheckExistUser(users, username);
             if (UserExist == true)
             {
-                while (Case == 'c')
-                {
-                    Console.WriteLine("------------------------------------------------------");
-                    Console.WriteLine("To update the password type {a}");
-                    Console.WriteLine("To update the role type {b}");
-                    Console.Write("Type the field who want to update: ");
-                    switch (Console.ReadLine())
-                    {
-                        case "a":
-                            string password = LoginScreen.SamePasswordMethod();
-                            DatabasesAccess.UpdatePassword(username, password);
-                            Case = 'a';
-                            break;
-                        case "b":
-                            Case = 'b';
-                            break;
-                        default:
-                            Console.Write("\n");
-                            Console.WriteLine("That is an incorrect option entry, please try again.");
-                            break;
-                    }
-                }
+                Console.WriteLine("------------------------------------------------------");
+                string password = LoginScreen.SamePasswordMethod();
+                DatabasesAccess.UpdatePassword(username, password);
+            }
+            else
+            {
+                Console.Write("The user does not exist");
+            }
+        }
+
+
+
+        static void UpdateRoleMethod()
+        {
+            string cmd = "select * from users";
+            Console.Write("Type the username you want to update: ");
+            string username = Console.ReadLine();
+            IEnumerable<dynamic> users = DatabasesAccess.ConnectDatabase(cmd);
+            bool UserExist = LoginScreen.CheckExistUser(users, username);
+            if (UserExist == true)
+            {
+                Console.WriteLine("------------------------------------------------------");
             }
             else
             {
