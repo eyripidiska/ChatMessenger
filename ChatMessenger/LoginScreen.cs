@@ -16,7 +16,7 @@ namespace ChatMessenger
             Console.WriteLine("\n");
             Console.Write("Username: ");
             string username = Console.ReadLine();
-            
+
             IEnumerable<dynamic> users = DatabasesAccess.ConnectDatabase(cmd);
 
             while (foundPassword == false)
@@ -124,10 +124,10 @@ namespace ChatMessenger
             string password2 = "";
             while (samePassword == false)
             {
-                Console.WriteLine("Type the password: ");
+                Console.Write("Type the ");
                 password1 = MaskMethod();
                 Console.Write("\n");
-                Console.WriteLine("Repeat the password: ");
+                Console.Write("Repeat the ");
                 password2 = MaskMethod();
                 if (password1 == password2)
                 {
@@ -168,6 +168,20 @@ namespace ChatMessenger
             }
             while (UserExist == true);
             return username;
+        }
+
+
+        public static bool CheckExistUser(IEnumerable<dynamic> users, string username)
+        {
+            bool UserExist = false;
+            foreach (var u in users)
+            {
+                if (username == u.username)
+                {
+                    UserExist = true;
+                }
+            }
+            return UserExist;
         }
 
     }

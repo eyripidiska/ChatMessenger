@@ -53,7 +53,6 @@ namespace ChatMessenger
         static void CreateUserMethod()
         {
             string cmd = "select * from users";
-
             IEnumerable<dynamic> users = DatabasesAccess.ConnectDatabase(cmd);
             string username = LoginScreen.CheckExistUser(users);
             string password = LoginScreen.SamePasswordMethod();
@@ -65,128 +64,74 @@ namespace ChatMessenger
         static void ViewUserMethod()
         {
             string cmd = "select * from users";
-
             IEnumerable<dynamic> users = DatabasesAccess.ConnectDatabase(cmd);
-
+            Console.WriteLine("------------------------------------------------------");
             Console.WriteLine("The users are:");
-
+            Console.Write("\n");
             foreach (var u in users)
             {
                 Console.WriteLine(u.username);
             }
+            Console.Write("\n");
             Console.WriteLine("Press any key to return back");
-            Console.WriteLine("\n");
             Console.ReadKey();
         }
 
 
+
         static void DeleteMethod()
         {
-            var connectionString = Properties.Settings.Default.connectionString;
-            SqlConnection dbcon = new SqlConnection(connectionString);
-            Console.Write("Type the name who want to delete: ");
+            string cmd = "select * from users";
+            Console.Write("Type the username you want to delete: ");
             string username = Console.ReadLine();
-            using (dbcon)
+            IEnumerable<dynamic> users = DatabasesAccess.ConnectDatabase(cmd);
+            bool UserExist = LoginScreen.CheckExistUser(users, username);
+            if(UserExist == false)
             {
-                dbcon.Open();
-                var parameters = new DynamicParameters();
-                parameters.Add("username", username);
-                var affectedRows = dbcon.Execute("Delete_Users", parameters, commandType: CommandType.StoredProcedure);
-                Console.WriteLine($"{affectedRows} Affected Rows");
+                Console.Write("The user does not exist");
+                Console.WriteLine("\n");
             }
+            DatabasesAccess.DeleteUsers(username);
         }
+
+
 
         static void UpdateMethod()
         {
-            var connectionString = Properties.Settings.Default.connectionString;
-            string Case = "c";
-            string password1 = "";
-            string password2 = "";
-            string newUsername = "";
-            bool foundUser = false;
-            string username = "";
-            SqlConnection dbcon = new SqlConnection(connectionString);
-            SqlConnection dbcon2 = new SqlConnection(connectionString);
-            Console.Write("Type the name who want to update: ");
-            username = Console.ReadLine();
-            using (dbcon)
+            char Case = 'c';
+            string cmd = "select * from users";
+            Console.Write("Type the username you want to update: ");
+            string username = Console.ReadLine();
+            IEnumerable<dynamic> users = DatabasesAccess.ConnectDatabase(cmd);
+            bool UserExist = LoginScreen.CheckExistUser(users, username);
+            if (UserExist == true)
             {
-                dbcon.Open();
-                var user = dbcon.Query("select * from users");
-
-                while (foundUser == false)
+                while (Case == 'c')
                 {
-                    foreach (var u in user)
+                    Console.WriteLine("------------------------------------------------------");
+                    Console.WriteLine("To update the password type {a}");
+                    Console.WriteLine("To update the role type {b}");
+                    Console.Write("Type the field who want to update: ");
+                    switch (Console.ReadLine())
                     {
-                        if (username == u.username)
-                        {
-                            foundUser = true;
-                        }
-                    }
-                    if (foundUser == false)
-                    {
-                        Console.WriteLine("The name doesnt fount");
-                        Console.Write("Type the name who want to update: ");
-                        username = Console.ReadLine();
+                        case "a":
+                            string password = LoginScreen.SamePasswordMethod();
+                            DatabasesAccess.UpdatePassword(username, password);
+                            Case = 'a';
+                            break;
+                        case "b":
+                            Case = 'b';
+                            break;
+                        default:
+                            Console.Write("\n");
+                            Console.WriteLine("That is an incorrect option entry, please try again.");
+                            break;
                     }
                 }
             }
-            Console.WriteLine("\n");
-            Console.WriteLine("for username type a");
-            Console.WriteLine("for password type b");
-            Console.Write("Type the field who want to update: ");
-            while (Case == "c")
+            else
             {
-                switch (Console.ReadLine())
-                {
-                    case "a":
-                        Console.Write("Type the new username: ");
-                        newUsername = Console.ReadLine();
-                        Case = "a";
-                        break;
-                    case "b":
-                        bool check = false;
-                        while (check == false)
-                        {
-                            Console.Write("Type the new password: ");
-                            password1 = LoginScreen.MaskMethod();
-                            Console.WriteLine("\n");
-                            Console.Write("Repeat the new password: ");
-                            password2 = LoginScreen.MaskMethod();
-                            if (password1 == password2)
-                            {
-                                check = true;
-                            }
-                            else
-                            {
-                                Console.WriteLine("the passwords doesn't match");
-                            }
-                        }
-                        Case = "b";
-                        break;
-                    default:
-                        Console.WriteLine("That is an incorrect option entry, please try again.");
-                        break;
-                }
-            }
-            Console.WriteLine("\n");
-            using (dbcon2)
-            {
-                dbcon2.Open();
-                var parameters = new DynamicParameters();
-                parameters.Add("username", username);
-                if (Case == "a")
-                {
-                    parameters.Add("newUsername", newUsername);
-                    var affectedRows = dbcon2.Execute("Update_Users_By_Username", parameters, commandType: CommandType.StoredProcedure);
-                    Console.WriteLine($"{affectedRows} Affected Rows");
-                }
-                else if (Case == "b")
-                {
-                    parameters.Add("newPassword", password1);
-                    var affectedRows = dbcon2.Execute("Update_Users_By_Password", parameters, commandType: CommandType.StoredProcedure);
-                    Console.WriteLine($"{affectedRows} Affected Rows");
-                }
+                Console.Write("The user does not exist");
             }
         }
     }
