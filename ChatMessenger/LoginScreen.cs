@@ -11,14 +11,11 @@ namespace ChatMessenger
         {
             bool foundPassword = false;
             string cmd = "select * from users";
-
             Console.WriteLine("Login Screen");
             Console.WriteLine("\n");
             Console.Write("Username: ");
             string username = Console.ReadLine();
-
             IEnumerable<dynamic> users = DatabasesAccess.ConnectDatabase(cmd);
-
             while (foundPassword == false)
             {
                 foreach (var u in users)
@@ -40,7 +37,6 @@ namespace ChatMessenger
                     username = Console.ReadLine();
                 }
             }
-
         }
 
 
@@ -49,7 +45,6 @@ namespace ChatMessenger
         public static bool PasswordMethod(string Password, int salt)
         {
             bool foundPassword = false;
-
             while (foundPassword == false)
             {
                 string password = MaskMethod();
@@ -146,7 +141,6 @@ namespace ChatMessenger
 
 
 
-
         public static string CheckExistUser(IEnumerable<dynamic> users)
         {
             bool UserExist;
@@ -169,6 +163,7 @@ namespace ChatMessenger
             while (UserExist == true);
             return username;
         }
+
 
 
         public static bool CheckExistUser(IEnumerable<dynamic> users, string username)

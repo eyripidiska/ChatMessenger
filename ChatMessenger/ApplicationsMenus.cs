@@ -22,21 +22,20 @@ namespace ChatMessenger
                 switch (Console.ReadLine())
                 {
                     case "a":
-                        CreateUserMethod();
+                        MainApplication.CreateUserMethod();
                         break;
                     case "b":
-                        ViewUserMethod();
+                        MainApplication.ViewUserMethod();
                         break;
                     case "c":
-                        DeleteMethod();
+                        MainApplication.DeleteMethod();
                         break;
                     case "d":
-                        UpdatePasswordMethod();
+                        MainApplication.UpdatePasswordMethod();
                         break;
                     case "e":
-                        UpdateRoleMethod();
+                        MainApplication.UpdateRoleMethod();
                         break;
-                    // Return text for an incorrect option entry
                     default:
                         Console.Write("\n");
                         Console.WriteLine("That is an incorrect option entry, please try again.");
@@ -45,91 +44,50 @@ namespace ChatMessenger
                 Console.Write("\n");
             }
         }
+        
+    
 
-
-
-        static void CreateUserMethod()
+        public static string RoleMethod()
         {
-            string cmd = "select * from users";
-            IEnumerable<dynamic> users = DatabasesAccess.ConnectDatabase(cmd);
-            string username = LoginScreen.CheckExistUser(users);
-            string password = LoginScreen.SamePasswordMethod();
-            DatabasesAccess.InsertUsers(username, password);
-        }
-
-
-
-        static void ViewUserMethod()
-        {
-            string cmd = "select * from users";
-            IEnumerable<dynamic> users = DatabasesAccess.ConnectDatabase(cmd);
-            Console.WriteLine("------------------------------------------------------");
-            Console.WriteLine("The users are:");
-            Console.Write("\n");
-            foreach (var u in users)
+            bool CorrectRole = false;
+            string role="";
+            while (CorrectRole == false)
             {
-                Console.WriteLine(u.username);
-            }
-            Console.Write("\n");
-            Console.WriteLine("Press any key to return back");
-            Console.ReadKey();
-        }
-
-
-
-        static void DeleteMethod()
-        {
-            string cmd = "select * from users";
-            Console.Write("Type the username you want to delete: ");
-            string username = Console.ReadLine();
-            IEnumerable<dynamic> users = DatabasesAccess.ConnectDatabase(cmd);
-            bool UserExist = LoginScreen.CheckExistUser(users, username);
-            if(UserExist == false)
-            {
-                Console.Write("The user does not exist");
+                CorrectRole = true;
                 Console.WriteLine("\n");
-            }
-            DatabasesAccess.DeleteUsers(username);
-        }
-
-
-
-        static void UpdatePasswordMethod()
-        {
-            string cmd = "select * from users";
-            Console.Write("Type the username you want to update: ");
-            string username = Console.ReadLine();
-            IEnumerable<dynamic> users = DatabasesAccess.ConnectDatabase(cmd);
-            bool UserExist = LoginScreen.CheckExistUser(users, username);
-            if (UserExist == true)
-            {
                 Console.WriteLine("------------------------------------------------------");
-                string password = LoginScreen.SamePasswordMethod();
-                DatabasesAccess.UpdatePassword(username, password);
+                Console.WriteLine("To set user privilege press {a}");
+                Console.WriteLine("To set Admin with view privilege press {b}");
+                Console.WriteLine("To set Admin with view and edit privilege press {c}");
+                Console.WriteLine("To set Admin with view, Edit and Delete privilege press {d}");
+                Console.WriteLine("To set super Admin privilege press {e}");
+                Console.Write("\n");
+                Console.Write("Press a letter: ");
+                switch (Console.ReadLine())
+                {
+                    case "a":
+                        role = "User";
+                        break;
+                    case "b":
+                        role = "View Admin";
+                        break;
+                    case "c":
+                        role = "View-Edit Admin";
+                        break;
+                    case "d":
+                        role = "View-Edit-Delete Admin";
+                        break;
+                    case "e":
+                        role = "Super Admin";
+                        break;
+                    default:
+                        Console.Write("\n");
+                        Console.WriteLine("That is an incorrect option entry, please try again.");
+                        CorrectRole = false;
+                        break;
+                }
             }
-            else
-            {
-                Console.Write("The user does not exist");
-            }
-        }
-
-
-
-        static void UpdateRoleMethod()
-        {
-            string cmd = "select * from users";
-            Console.Write("Type the username you want to update: ");
-            string username = Console.ReadLine();
-            IEnumerable<dynamic> users = DatabasesAccess.ConnectDatabase(cmd);
-            bool UserExist = LoginScreen.CheckExistUser(users, username);
-            if (UserExist == true)
-            {
-                Console.WriteLine("------------------------------------------------------");
-            }
-            else
-            {
-                Console.Write("The user does not exist");
-            }
+            return role;
         }
     }
 }
