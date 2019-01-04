@@ -20,7 +20,7 @@ namespace ChatMessenger
             {
                 foreach (var u in users)
                 {
-                    if (username == u.username)
+                    if (username == u.username && u.deleted == true)
                     {
                         string Password = u.pass;
                         int salt = u.salt;
@@ -151,7 +151,7 @@ namespace ChatMessenger
                 UserExist = false;
                 foreach (var u in users)
                 {
-                    if (username == u.username)
+                    if (username == u.username && u.deleted == true)
                     {
                         Console.WriteLine("------------------------------------------------------");
                         Console.Write("The user exist type another username: ");
@@ -164,6 +164,23 @@ namespace ChatMessenger
             return username;
         }
 
+        public static bool ReturnExistUser(IEnumerable<dynamic> users, string username)
+        {
+            bool UserExist = false;
+            foreach (var u in users)
+            {
+                if (username == u.username && u.deleted == true)
+                {
+                    UserExist = true;
+                }
+            }
+            if (UserExist == false)
+            {
+                Console.Write("The user does not exist");
+            }
+            return UserExist;
+        }
+
 
 
         public static bool CheckExistUser(IEnumerable<dynamic> users, string username)
@@ -171,7 +188,7 @@ namespace ChatMessenger
             bool UserExist = false;
             foreach (var u in users)
             {
-                if (username == u.username)
+                if (username == u.username && u.deleted == true)
                 {
                     UserExist = true;
                 }

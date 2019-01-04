@@ -44,13 +44,13 @@ namespace ChatMessenger
                 Console.Write("\n");
             }
         }
-        
-    
+
+
 
         public static string RoleMethod()
         {
             bool CorrectRole = false;
-            string role="";
+            string role = "";
             while (CorrectRole == false)
             {
                 CorrectRole = true;
@@ -88,6 +88,42 @@ namespace ChatMessenger
                 }
             }
             return role;
+        }
+
+
+
+        public static void MessageMethod()
+        {
+            while (true)
+            {
+                Console.WriteLine("------------------------------------------------------");
+                Console.WriteLine("To view the users press {a}");
+                Console.WriteLine("To choase a user press {b}");
+                Console.Write("\n");
+                Console.Write("Press a letter: ");
+                switch (Console.ReadLine())
+                {
+                    case "a":
+                        MainApplication.ViewUserMethod();
+                        break;
+                    case "b":
+                        string cmd = "select * from users";
+                        IEnumerable<dynamic> users = DatabasesAccess.ConnectDatabase(cmd);
+                        Console.Write("Type the user you want to exchange messages: ");
+                        string username = Console.ReadLine();
+                        bool existUser = LoginScreen.ReturnExistUser(users, username);
+                        if (existUser == true)
+                        {
+                            Console.WriteLine("evrika");
+                        }
+                        break;
+                    default:
+                        Console.Write("\n");
+                        Console.WriteLine("That is an incorrect option entry, please try again.");
+                        break;
+                }
+                Console.Write("\n");
+            }
         }
     }
 }

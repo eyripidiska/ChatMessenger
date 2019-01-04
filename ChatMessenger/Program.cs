@@ -5,6 +5,7 @@ namespace ChatMessenger
         static void Main(string[] args)
         {
             LoginScreen.LoginMethod();
+            //ApplicationsMenus.MessageMethod();
         }
     }
 }
