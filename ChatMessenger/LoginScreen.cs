@@ -15,7 +15,7 @@ namespace ChatMessenger
             Console.WriteLine("\n");
             Console.Write("Username: ");
             string username = Console.ReadLine();
-            IEnumerable<dynamic> users = DatabasesAccess.ConnectDatabase(cmd);
+            IEnumerable<dynamic> users = DatabasesAccess.ReturnQueryDatabase(cmd);
             while (foundPassword == false)
             {
                 foreach (var u in users)
@@ -24,15 +24,22 @@ namespace ChatMessenger
                     {
                         string Password = u.pass;
                         int salt = u.salt;
+                        string TypeOfUser = u.role;
+                        Console.Clear();
+                        Console.WriteLine("Login Screen");
+                        Console.Write("\n");
                         foundPassword = PasswordMethod(Password, salt);
-                        Console.WriteLine($"Welcome {username}");
-                        ApplicationsMenus.ApplicationMethod();
+                        Console.Write("\n");
+                        Console.Clear();
+                        ApplicationsMenus.ApplicationMethod(username, TypeOfUser);
                     }
                 }
                 if (foundPassword == false)
                 {
-                    Console.WriteLine("The user doesn't exists");
+                    Console.Clear();
+                    Console.WriteLine("Login Screen");
                     Console.Write("\n");
+                    Console.WriteLine("Incorrect username");
                     Console.Write("Username: ");
                     username = Console.ReadLine();
                 }
@@ -69,6 +76,9 @@ namespace ChatMessenger
 
                 if (encryptedPassword != Password)
                 {
+                    Console.Clear();
+                    Console.WriteLine("Login Screen");
+                    Console.Write("\n");
                     Console.WriteLine("Incorrect password try again");
                     password = "";
                 }
@@ -130,9 +140,8 @@ namespace ChatMessenger
                 }
                 else
                 {
-                    Console.Write("\n");
+                    Console.Clear();
                     Console.WriteLine("the passwords doesn't match");
-                    Console.WriteLine("------------------------------------------------------");
                 }
             }
             Console.Write("\n");
@@ -153,7 +162,7 @@ namespace ChatMessenger
                 {
                     if (username == u.username && u.deleted == true)
                     {
-                        Console.WriteLine("------------------------------------------------------");
+                        Console.Clear();
                         Console.Write("The user exist type another username: ");
                         username = Console.ReadLine();
                         UserExist = true;

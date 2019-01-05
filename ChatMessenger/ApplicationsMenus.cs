@@ -6,56 +6,65 @@ namespace ChatMessenger
 
     class ApplicationsMenus
     {
-        public static void ApplicationMethod()
+        public static void ApplicationMethod(string username, string TypeOfUser)
         {
+            Users user;
+            Console.WriteLine($"Welcome {username}");
+            Console.Write("\n");
+
+            if (TypeOfUser == "Super Admin")
+            {
+                user = new SuperAdmin(username);
+            }
+            else if (TypeOfUser == "View-Edit-Delete Admin")
+            {
+                user = new ViewEditDeleteAdmin(username);
+            }
+            else if (TypeOfUser == "View-Edit Admin")
+            {
+                user = new ViewEditAdmin(username);
+            }
+            else if (TypeOfUser == "View Admin")
+            {
+                user = new ViewAdmin(username);
+            }
+            else 
+            {
+                user = new User(username);
+            }
             while (true)
             {
-                Console.WriteLine("------------------------------------------------------");
-                Console.WriteLine("To create a user press {a}");
-                Console.WriteLine("To view the users press {b}");
-                Console.WriteLine("To delete a user press {c}");
-                Console.WriteLine("To update a user password press {d}");
-                Console.WriteLine("To update a user role press {e}");
+                user.PublicMenuMethod();
                 Console.Write("\n");
                 Console.Write("Press a letter: ");
 
-                switch (Console.ReadLine())
+                string choice = Console.ReadLine();
+                if (user.application.ContainsKey(choice))
                 {
-                    case "a":
-                        MainApplication.CreateUserMethod();
-                        break;
-                    case "b":
-                        MainApplication.ViewUserMethod();
-                        break;
-                    case "c":
-                        MainApplication.DeleteMethod();
-                        break;
-                    case "d":
-                        MainApplication.UpdatePasswordMethod();
-                        break;
-                    case "e":
-                        MainApplication.UpdateRoleMethod();
-                        break;
-                    default:
-                        Console.Write("\n");
-                        Console.WriteLine("That is an incorrect option entry, please try again.");
-                        break;
+                    Console.Clear();
+                    user.application[choice]();
                 }
-                Console.Write("\n");
+                else
+                {
+                    Console.Clear();
+                    Console.WriteLine("That is an incorrect option entry, please try again.");
+                    Console.Write("\n");
+                    Console.Write("Press a letter: ");
+                }
             }
+
         }
 
 
 
         public static string RoleMethod()
         {
+            Console.Clear();
             bool CorrectRole = false;
             string role = "";
             while (CorrectRole == false)
             {
                 CorrectRole = true;
-                Console.WriteLine("\n");
-                Console.WriteLine("------------------------------------------------------");
                 Console.WriteLine("To set user privilege press {a}");
                 Console.WriteLine("To set Admin with view privilege press {b}");
                 Console.WriteLine("To set Admin with view and edit privilege press {c}");
@@ -81,49 +90,15 @@ namespace ChatMessenger
                         role = "Super Admin";
                         break;
                     default:
-                        Console.Write("\n");
+                        Console.Clear();
                         Console.WriteLine("That is an incorrect option entry, please try again.");
+                        Console.Write("\n");
                         CorrectRole = false;
                         break;
                 }
             }
+            Console.Clear();
             return role;
-        }
-
-
-
-        public static void MessageMethod()
-        {
-            while (true)
-            {
-                Console.WriteLine("------------------------------------------------------");
-                Console.WriteLine("To view the users press {a}");
-                Console.WriteLine("To choase a user press {b}");
-                Console.Write("\n");
-                Console.Write("Press a letter: ");
-                switch (Console.ReadLine())
-                {
-                    case "a":
-                        MainApplication.ViewUserMethod();
-                        break;
-                    case "b":
-                        string cmd = "select * from users";
-                        IEnumerable<dynamic> users = DatabasesAccess.ConnectDatabase(cmd);
-                        Console.Write("Type the user you want to exchange messages: ");
-                        string username = Console.ReadLine();
-                        bool existUser = LoginScreen.ReturnExistUser(users, username);
-                        if (existUser == true)
-                        {
-                            Console.WriteLine("evrika");
-                        }
-                        break;
-                    default:
-                        Console.Write("\n");
-                        Console.WriteLine("That is an incorrect option entry, please try again.");
-                        break;
-                }
-                Console.Write("\n");
-            }
         }
     }
 }

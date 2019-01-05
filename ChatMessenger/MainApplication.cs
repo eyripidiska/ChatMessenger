@@ -5,14 +5,45 @@ namespace ChatMessenger
 {
     class MainApplication
     {
+        public static void MessageMethod()
+        {
+            string cmd = "select * from users";
+            IEnumerable<dynamic> users = DatabasesAccess.ReturnQueryDatabase(cmd);
+            Console.Write("Type the user you want to exchange messages: ");
+            string username = Console.ReadLine();
+            bool existUser = LoginScreen.ReturnExistUser(users, username);
+            if (existUser == true)
+            {
+                Console.WriteLine("evrika");
+            }
+        }
+
+
+        public static void ViewMessageMethod()
+        {
+
+        }
+
+
+        public static void EditMessageMethod()
+        {
+
+        }
+
+        public static void DeleteMessageMethod()
+        {
+
+        }
+
+
         public static void CreateUserMethod()
         {
             string cmd = "select * from users";
-            IEnumerable<dynamic> users = DatabasesAccess.ConnectDatabase(cmd);
+            IEnumerable<dynamic> users = DatabasesAccess.ReturnQueryDatabase(cmd);
             string username = LoginScreen.CheckExistUser(users);
             string password = LoginScreen.SamePasswordMethod();
             string role = ApplicationsMenus.RoleMethod();
-            DatabasesAccess.InsertUsers(username, password, role);
+            DatabasesAccess.InsertUsersDatabase(username, password, role);
         }
 
 
@@ -20,8 +51,7 @@ namespace ChatMessenger
         public static void ViewUserMethod()
         {
             string cmd = "select * from users";
-            IEnumerable<dynamic> users = DatabasesAccess.ConnectDatabase(cmd);
-            Console.WriteLine("------------------------------------------------------");
+            IEnumerable<dynamic> users = DatabasesAccess.ReturnQueryDatabase(cmd);
             Console.WriteLine("The users are:");
             Console.Write("\n");
             foreach (var u in users)
@@ -31,23 +61,26 @@ namespace ChatMessenger
             Console.Write("\n");
             Console.WriteLine("Press any key to return back");
             Console.ReadKey();
+            Console.Clear();
         }
 
 
 
-        public static void DeleteMethod()
+        public static void DeleteUserMethod()
         {
             string cmd = "select * from users";
             Console.Write("Type the username you want to delete: ");
             string username = Console.ReadLine();
-            IEnumerable<dynamic> users = DatabasesAccess.ConnectDatabase(cmd);
+            IEnumerable<dynamic> users = DatabasesAccess.ReturnQueryDatabase(cmd);
             bool UserExist = LoginScreen.CheckExistUser(users, username);
             if (UserExist == false)
             {
+                Console.Clear();
                 Console.Write("The user does not exist");
                 Console.WriteLine("\n");
             }
-            DatabasesAccess.DeleteUsers(username);
+            Console.Clear();
+            DatabasesAccess.DeleteUsersDatabase(username);
         }
 
 
@@ -57,17 +90,20 @@ namespace ChatMessenger
             string cmd = "select * from users";
             Console.Write("Type the username you want to update: ");
             string username = Console.ReadLine();
-            IEnumerable<dynamic> users = DatabasesAccess.ConnectDatabase(cmd);
+            IEnumerable<dynamic> users = DatabasesAccess.ReturnQueryDatabase(cmd);
             bool UserExist = LoginScreen.CheckExistUser(users, username);
             if (UserExist == true)
             {
-                Console.WriteLine("------------------------------------------------------");
+                Console.Clear();
                 string password = LoginScreen.SamePasswordMethod();
-                DatabasesAccess.UpdatePassword(username, password);
+                Console.Clear();
+                DatabasesAccess.UpdatePasswordDatabase(username, password);
             }
             else
             {
-                Console.Write("The user does not exist");
+                Console.Clear();
+                Console.WriteLine("The user does not exist");
+                Console.Write("\n");
             }
         }
 
@@ -78,17 +114,19 @@ namespace ChatMessenger
             string cmd = "select * from users";
             Console.Write("Type the username you want to update: ");
             string username = Console.ReadLine();
-            IEnumerable<dynamic> users = DatabasesAccess.ConnectDatabase(cmd);
+            IEnumerable<dynamic> users = DatabasesAccess.ReturnQueryDatabase(cmd);
             bool UserExist = LoginScreen.CheckExistUser(users, username);
             if (UserExist == true)
             {
-                Console.WriteLine("------------------------------------------------------");
+                Console.Clear();
                 string role = ApplicationsMenus.RoleMethod();
-                DatabasesAccess.UpdateRole(username, role);
+                DatabasesAccess.UpdateRoleDatabase(username, role);
             }
             else
             {
-                Console.Write("The user does not exist");
+                Console.Clear();
+                Console.WriteLine("The user does not exist");
+                Console.Write("\n");
             }
         }
     }

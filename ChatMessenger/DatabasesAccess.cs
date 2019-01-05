@@ -8,7 +8,7 @@ namespace ChatMessenger
 {
     class DatabasesAccess
     {
-        public static IEnumerable<dynamic> ConnectDatabase(string cmd)
+        public static IEnumerable<dynamic> ReturnQueryDatabase(string cmd)
         {
             var connectionString = Properties.Settings.Default.connectionString;
             SqlConnection dbcon = new SqlConnection(connectionString);
@@ -22,7 +22,7 @@ namespace ChatMessenger
 
 
 
-        public static void InsertUsers(string username, string password, string role)
+        public static void InsertUsersDatabase(string username, string password, string role)
         {
             var connectionString = Properties.Settings.Default.connectionString;
             SqlConnection dbcon = new SqlConnection(connectionString);
@@ -36,14 +36,12 @@ namespace ChatMessenger
                 var affectedRows = dbcon.Execute("Insert_Users", parameters, commandType: CommandType.StoredProcedure);
                 Console.WriteLine($"{affectedRows} Affected Rows");
             }
-
-
-
+            Console.Write("\n");
         }
 
 
 
-        public static void DeleteUsers(string username)
+        public static void DeleteUsersDatabase(string username)
         {
             var connectionString = Properties.Settings.Default.connectionString;
             SqlConnection dbcon = new SqlConnection(connectionString);
@@ -55,11 +53,12 @@ namespace ChatMessenger
                 var affectedRows = dbcon.Execute("Delete_Users", parameters, commandType: CommandType.StoredProcedure);
                 Console.WriteLine($"{affectedRows} Affected Rows");
             }
+            Console.Write("\n");
         }
 
 
 
-        public static void UpdatePassword(string username, string password)
+        public static void UpdatePasswordDatabase(string username, string password)
         {
             var connectionString = Properties.Settings.Default.connectionString;
             SqlConnection dbcon = new SqlConnection(connectionString);
@@ -71,13 +70,13 @@ namespace ChatMessenger
                 parameters.Add("newPassword", password);
                 var affectedRows = dbcon.Execute("Update_Users_By_Password", parameters, commandType: CommandType.StoredProcedure);
                 Console.WriteLine($"{affectedRows} Affected Rows");
-                
             }
+            Console.Write("\n");
         }
 
 
 
-        public static void UpdateRole(string username, string role)
+        public static void UpdateRoleDatabase(string username, string role)
         {
             var connectionString = Properties.Settings.Default.connectionString;
             SqlConnection dbcon = new SqlConnection(connectionString);
@@ -89,8 +88,8 @@ namespace ChatMessenger
                 parameters.Add("newRole", role);
                 var affectedRows = dbcon.Execute("Update_Users_By_Role", parameters, commandType: CommandType.StoredProcedure);
                 Console.WriteLine($"{affectedRows} Affected Rows");
-
             }
+            Console.Write("\n");
         }
     }
 }
