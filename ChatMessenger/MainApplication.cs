@@ -6,9 +6,9 @@ namespace ChatMessenger
 {
     class MainApplication
     {
-        public static void MessageMethod()
+        public static void SendMessage()
         {
-            string cmd = "select * from users";
+            string cmd = "select * from users where deleted = 1";
             IEnumerable<dynamic> users = DatabasesAccess.ReturnQueryDatabase(cmd);
             Console.Write("Type the user you want to exchange messages: ");
             string Username = Console.ReadLine();
@@ -23,6 +23,45 @@ namespace ChatMessenger
                 Console.Clear();
                 Message.SendMessageMethod(userId, ReceiverId, Username);
             }
+        }
+
+
+        public static void ViewMessage()
+        {
+            string cmd = "select * from users where deleted = 1";
+            IEnumerable<dynamic> users = DatabasesAccess.ReturnQueryDatabase(cmd);
+            Console.Write("Type the user you want to read the messages: ");
+            string Username = Console.ReadLine();
+            bool existUser = LoginScreen.ReturnExistUser(users, Username);
+            if (existUser == true)
+            {
+                var receiverId = users
+                    .Where(x => x.username == Username)
+                    .Select(x => x.id);
+                int ReceiverId = Convert.ToInt32(receiverId.FirstOrDefault());
+                int userId = ApplicationsMenus.userId;
+                Console.Clear();
+                cmd = "SELECT * FROM messages WHERE(senderId = @senderId AND receiverId = @receiverId) OR (senderId = @receiverId AND receiverId = @senderId);";
+                IEnumerable<dynamic> messages = DatabasesAccess.ReadMessagesDatabase(cmd, userId, ReceiverId);
+                foreach(var m in messages)
+                {
+                    if (m.senderId == userId)
+                    {
+                        Console.WriteLine("You" + ": " + m.messageData);
+                    }
+                    else
+                    {
+                       Console.WriteLine(Username + ": " + m.messageData);
+                    }
+                }
+                Console.ReadLine();
+            }
+        }
+
+
+        public static void ViewNewMessage()
+        {
+            Console.WriteLine("c");
         }
 
 

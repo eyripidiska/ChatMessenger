@@ -16,9 +16,10 @@ namespace ChatMessenger
 
     public abstract class Users
     {
-        public int Id;
-        public string Name;
-        public UserType TypeOfUser;
+        public int _Id { get; set; }
+        public string _Name { get; set; }
+        public UserType _TypeOfUser { get; set; }
+
         public Dictionary<string, Application> application = new Dictionary<string, Application>();
 
         public virtual void PublicMenuMethod()
@@ -33,10 +34,10 @@ namespace ChatMessenger
     {
         public User(string NewUsernamame, int newId)
         {
-            Id = newId;
-            Name = NewUsernamame;
-            TypeOfUser = UserType.User;
-            application.Add("a", MainApplication.MessageMethod);
+            _Id = newId;
+            _Name = NewUsernamame;
+            _TypeOfUser = UserType.User;
+            application.Add("a", ApplicationsMenus.MessageMenuMethod);
         }
     }
 
@@ -46,7 +47,7 @@ namespace ChatMessenger
     {
         public ViewAdmin(string NewUsernamame, int newId) : base(NewUsernamame, newId)
         {
-            TypeOfUser = UserType.ViewAdmin;
+            _TypeOfUser = UserType.ViewAdmin;
             application.Add("b", MainApplication.ViewMessageMethod);
         }
 
@@ -63,7 +64,7 @@ namespace ChatMessenger
     {
         public ViewEditAdmin(string NewUsernamame, int newId) : base(NewUsernamame, newId)
         {
-            TypeOfUser = UserType.ViewEditAdmin;
+            _TypeOfUser = UserType.ViewEditAdmin;
             application.Add("c", MainApplication.EditMessageMethod);
         }
 
@@ -82,7 +83,7 @@ namespace ChatMessenger
 
         public ViewEditDeleteAdmin(string NewUsernamame, int newId) : base(NewUsernamame, newId)
         {
-            TypeOfUser = UserType.ViewEditDeleteAdmin;
+            _TypeOfUser = UserType.ViewEditDeleteAdmin;
             application.Add("d", MainApplication.DeleteMessageMethod);
         }
 
@@ -102,7 +103,7 @@ namespace ChatMessenger
 
         public SuperAdmin(string NewUsernamame, int newId) : base(NewUsernamame, newId)
         {
-            TypeOfUser = UserType.SuperAdmin;
+            _TypeOfUser = UserType.SuperAdmin;
             application.Add("e", MainApplication.CreateUserMethod);
             application.Add("f", MainApplication.ViewUserMethod);
             application.Add("g", MainApplication.DeleteUserMethod);

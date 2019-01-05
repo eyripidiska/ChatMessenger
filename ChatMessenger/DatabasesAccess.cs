@@ -110,5 +110,22 @@ namespace ChatMessenger
             }
             Console.Write("\n");
         }
+
+
+        public static IEnumerable<dynamic> ReadMessagesDatabase(string cmd, int userId, int receiverId)
+        {
+            var connectionString = Properties.Settings.Default.connectionString;
+            SqlConnection dbcon = new SqlConnection(connectionString);
+            using (dbcon)
+            {
+                dbcon.Open();
+                var parameters = new DynamicParameters();
+                parameters.Add("@senderId", userId);
+                parameters.Add("@receiverId", receiverId);
+                var table = dbcon.Query(cmd, parameters);
+                return table;
+            }
+
+        }
     }
 }

@@ -6,8 +6,23 @@ using System.Threading.Tasks;
 
 namespace ChatMessenger
 {
-    class Message
+    public class Message
     {
+        public int _userId { get; set; }
+        public int _receiverId { get; set; }
+        public string _Username { get; set; }
+
+
+
+        public Message(int userId, int receiverId, string Username)
+        {
+            _userId = userId;
+            _receiverId = receiverId;
+            _Username = Username;
+        }
+        
+
+
         public static void SendMessageMethod(int userId, int receiverId, string username)
         {
             Console.WriteLine($"Write a message to {username}, the maximun text limited to 250 characters");
@@ -24,6 +39,12 @@ namespace ChatMessenger
                 Console.WriteLine("the message is over to 250 characters");
                 Console.WriteLine("\n");
             }
+        }
+
+
+        public static void ReadMessageMethod(int userId, int receiverId, string username)
+        {
+
         }
     }   
 }

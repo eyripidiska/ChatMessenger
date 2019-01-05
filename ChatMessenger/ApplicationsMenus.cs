@@ -17,7 +17,16 @@ namespace ChatMessenger
             {"e", "Super Admin"}
         };
 
-        
+        public delegate void menu();
+
+        private static Dictionary<string, menu> menuMessages = new Dictionary<string, menu>()
+        {
+            {"a", MainApplication.SendMessage},
+            {"b", MainApplication.ViewMessage},
+            {"c", MainApplication.ViewNewMessage}
+        };
+
+
 
         public static void ApplicationMenuMethod(string username, string TypeOfUser, int Id)
         {
@@ -59,13 +68,26 @@ namespace ChatMessenger
 
         public static void MessageMenuMethod()
         {
-            //Dictionary<string, string> menu = new Dictionary<string, string>();
-            //menu.Add("a", )
             Console.WriteLine("To send a message to a user press {a}");
             Console.WriteLine("To read a message from a user press {b}");
             Console.WriteLine("To read the new messages press {c}");
-            
+            string choice = Console.ReadLine();
+
+            if (menuMessages.ContainsKey(choice))
+            {
+                Console.Clear();
+                menuMessages[choice]();
+            }
+            else
+            {
+                Console.Clear();
+                Console.WriteLine("That is an incorrect option entry, please try again.");
+                Console.Write("\n");
+            }
         }
+
+
+
 
         public static string RoleMenuMethod()
         {
