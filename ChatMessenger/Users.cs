@@ -1,8 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace ChatMessenger
 {
@@ -19,6 +16,7 @@ namespace ChatMessenger
 
     public abstract class Users
     {
+        public int Id;
         public string Name;
         public UserType TypeOfUser;
         public Dictionary<string, Application> application = new Dictionary<string, Application>();
@@ -33,8 +31,9 @@ namespace ChatMessenger
 
     public class User : Users
     {
-        public User(string NewUsernamame)
+        public User(string NewUsernamame, int newId)
         {
+            Id = newId;
             Name = NewUsernamame;
             TypeOfUser = UserType.User;
             application.Add("a", MainApplication.MessageMethod);
@@ -45,7 +44,7 @@ namespace ChatMessenger
 
     public class ViewAdmin : User
     {
-        public ViewAdmin(string NewUsernamame) : base(NewUsernamame)
+        public ViewAdmin(string NewUsernamame, int newId) : base(NewUsernamame, newId)
         {
             TypeOfUser = UserType.ViewAdmin;
             application.Add("b", MainApplication.ViewMessageMethod);
@@ -62,7 +61,7 @@ namespace ChatMessenger
 
     public class ViewEditAdmin : ViewAdmin
     {
-        public ViewEditAdmin(string NewUsernamame) : base(NewUsernamame)
+        public ViewEditAdmin(string NewUsernamame, int newId) : base(NewUsernamame, newId)
         {
             TypeOfUser = UserType.ViewEditAdmin;
             application.Add("c", MainApplication.EditMessageMethod);
@@ -81,7 +80,7 @@ namespace ChatMessenger
     public class ViewEditDeleteAdmin : ViewEditAdmin
     {
 
-        public ViewEditDeleteAdmin(string NewUsernamame) : base(NewUsernamame)
+        public ViewEditDeleteAdmin(string NewUsernamame, int newId) : base(NewUsernamame, newId)
         {
             TypeOfUser = UserType.ViewEditDeleteAdmin;
             application.Add("d", MainApplication.DeleteMessageMethod);
@@ -101,7 +100,7 @@ namespace ChatMessenger
     public class SuperAdmin : ViewEditAdmin
     {
 
-        public SuperAdmin(string NewUsernamame) : base(NewUsernamame)
+        public SuperAdmin(string NewUsernamame, int newId) : base(NewUsernamame, newId)
         {
             TypeOfUser = UserType.SuperAdmin;
             application.Add("e", MainApplication.CreateUserMethod);

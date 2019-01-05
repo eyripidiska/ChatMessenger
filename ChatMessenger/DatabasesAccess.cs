@@ -91,5 +91,24 @@ namespace ChatMessenger
             }
             Console.Write("\n");
         }
+
+
+
+        public static void InsertMessagesDatabase(int userId, int receiverId, string message)
+        {
+            var connectionString = Properties.Settings.Default.connectionString;
+            SqlConnection dbcon = new SqlConnection(connectionString);
+            using (dbcon)
+            {
+                dbcon.Open();
+                var parameters = new DynamicParameters();
+                parameters.Add("@senderId", userId);
+                parameters.Add("@receiverId", receiverId);
+                parameters.Add("@messageData", message);
+                var affectedRows = dbcon.Execute("Insert_messages", parameters, commandType: CommandType.StoredProcedure);
+                Console.WriteLine($"{affectedRows} Affected Rows");
+            }
+            Console.Write("\n");
+        }
     }
 }

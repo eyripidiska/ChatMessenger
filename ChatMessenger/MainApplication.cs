@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 
 namespace ChatMessenger
 {
@@ -10,11 +11,17 @@ namespace ChatMessenger
             string cmd = "select * from users";
             IEnumerable<dynamic> users = DatabasesAccess.ReturnQueryDatabase(cmd);
             Console.Write("Type the user you want to exchange messages: ");
-            string username = Console.ReadLine();
-            bool existUser = LoginScreen.ReturnExistUser(users, username);
+            string Username = Console.ReadLine();
+            bool existUser = LoginScreen.ReturnExistUser(users, Username);
             if (existUser == true)
             {
-                Console.WriteLine("evrika");
+                var receiverId = users
+                    .Where(x => x.username == Username)
+                    .Select(x => x.id);
+                int ReceiverId = Convert.ToInt32(receiverId.FirstOrDefault());
+                int userId = ApplicationsMenus.userId;
+                Console.Clear();
+                Message.SendMessageMethod(userId, ReceiverId, Username);
             }
         }
 
@@ -42,7 +49,8 @@ namespace ChatMessenger
             IEnumerable<dynamic> users = DatabasesAccess.ReturnQueryDatabase(cmd);
             string username = LoginScreen.CheckExistUser(users);
             string password = LoginScreen.SamePasswordMethod();
-            string role = ApplicationsMenus.RoleMethod();
+            Console.Clear();
+            string role = ApplicationsMenus.RoleMenuMethod();
             DatabasesAccess.InsertUsersDatabase(username, password, role);
         }
 
@@ -50,7 +58,7 @@ namespace ChatMessenger
 
         public static void ViewUserMethod()
         {
-            string cmd = "select * from users";
+            string cmd = "select * from users where deleted = 1";
             IEnumerable<dynamic> users = DatabasesAccess.ReturnQueryDatabase(cmd);
             Console.WriteLine("The users are:");
             Console.Write("\n");
@@ -119,7 +127,7 @@ namespace ChatMessenger
             if (UserExist == true)
             {
                 Console.Clear();
-                string role = ApplicationsMenus.RoleMethod();
+                string role = ApplicationsMenus.RoleMenuMethod();
                 DatabasesAccess.UpdateRoleDatabase(username, role);
             }
             else

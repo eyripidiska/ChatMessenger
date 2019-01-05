@@ -25,13 +25,14 @@ namespace ChatMessenger
                         string Password = u.pass;
                         int salt = u.salt;
                         string TypeOfUser = u.role;
+                        int Id = u.id;
                         Console.Clear();
                         Console.WriteLine("Login Screen");
                         Console.Write("\n");
                         foundPassword = PasswordMethod(Password, salt);
                         Console.Write("\n");
                         Console.Clear();
-                        ApplicationsMenus.ApplicationMethod(username, TypeOfUser);
+                        ApplicationsMenus.ApplicationMenuMethod(username, TypeOfUser, Id);
                     }
                 }
                 if (foundPassword == false)
@@ -185,7 +186,9 @@ namespace ChatMessenger
             }
             if (UserExist == false)
             {
-                Console.Write("The user does not exist");
+                Console.Clear();
+                Console.WriteLine("The user does not exist");
+                Console.Write("\n");
             }
             return UserExist;
         }
