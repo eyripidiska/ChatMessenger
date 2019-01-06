@@ -1,8 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace ChatMessenger
 {
@@ -36,7 +32,9 @@ namespace ChatMessenger
             else
             {
                 Console.Clear();
+                Console.ForegroundColor = ConsoleColor.Red;
                 Console.WriteLine("the message is over to 250 characters");
+                Console.ForegroundColor = ConsoleColor.White;
                 Console.WriteLine("\n");
             }
         }

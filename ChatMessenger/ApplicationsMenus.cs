@@ -22,8 +22,8 @@ namespace ChatMessenger
         private static Dictionary<string, menu> menuMessages = new Dictionary<string, menu>()
         {
             {"a", MainApplication.SendMessage},
-            {"b", MainApplication.ViewMessage},
-            {"c", MainApplication.ViewNewMessage}
+            {"b", MainApplication.ViewMessage}
+            //{"c", MainApplication.ViewNewMessage}
         };
 
 
@@ -58,7 +58,9 @@ namespace ChatMessenger
                 else
                 {
                     Console.Clear();
+                    Console.ForegroundColor = ConsoleColor.Red;
                     Console.WriteLine("That is an incorrect option entry, please try again.");
+                    Console.ForegroundColor = ConsoleColor.White;
                     Console.Write("\n");
                 }
             }
@@ -70,7 +72,7 @@ namespace ChatMessenger
         {
             Console.WriteLine("To send a message to a user press {a}");
             Console.WriteLine("To read a message from a user press {b}");
-            Console.WriteLine("To read the new messages press {c}");
+            //Console.WriteLine("To read the new messages press {c}");
             string choice = Console.ReadLine();
 
             if (menuMessages.ContainsKey(choice))
@@ -81,7 +83,9 @@ namespace ChatMessenger
             else
             {
                 Console.Clear();
+                Console.ForegroundColor = ConsoleColor.Red;
                 Console.WriteLine("That is an incorrect option entry, please try again.");
+                Console.ForegroundColor = ConsoleColor.White;
                 Console.Write("\n");
             }
         }
@@ -110,7 +114,9 @@ namespace ChatMessenger
                 else
                 {
                     Console.Clear();
+                    Console.ForegroundColor = ConsoleColor.Red;
                     Console.WriteLine("That is an incorrect option entry, please try again.");
+                    Console.ForegroundColor = ConsoleColor.White;
                     Console.Write("\n");
                 }
             }
