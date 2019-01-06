@@ -19,10 +19,8 @@ namespace ChatMessenger
         
 
 
-        public static void SendMessageMethod(int userId, int receiverId, string username)
+        public static void SendMessageMethod(int userId, int receiverId)
         {
-            Console.WriteLine($"Write a message to {username}, the maximun text limited to 250 characters");
-            Console.WriteLine("\n");
             string message = Console.ReadLine();
             if (message.Length <= 250)
             {
@@ -38,6 +36,9 @@ namespace ChatMessenger
                 Console.WriteLine("\n");
             }
         }
+
+
+
 
 
         public static void ReadMessageMethod(int userId, int receiverId, string username)

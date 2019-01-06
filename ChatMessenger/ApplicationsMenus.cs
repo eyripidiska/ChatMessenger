@@ -73,6 +73,8 @@ namespace ChatMessenger
             Console.WriteLine("To send a message to a user press {a}");
             Console.WriteLine("To read a message from a user press {b}");
             //Console.WriteLine("To read the new messages press {c}");
+            Console.Write("\n");
+            Console.Write("Press a letter: ");
             string choice = Console.ReadLine();
 
             if (menuMessages.ContainsKey(choice))

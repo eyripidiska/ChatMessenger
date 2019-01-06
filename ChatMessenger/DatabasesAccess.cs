@@ -142,5 +142,22 @@ namespace ChatMessenger
         //    }
 
         //}
+
+
+        public static void DeleteMessagesDatabase(int Id)
+        {
+            var connectionString = Properties.Settings.Default.connectionString;
+            SqlConnection dbcon = new SqlConnection(connectionString);
+            using (dbcon)
+            {
+                dbcon.Open();
+                var parameters = new DynamicParameters();
+                parameters.Add("id", Id);
+                var affectedRows = dbcon.Execute("Delete_messages", parameters, commandType: CommandType.StoredProcedure);
+                Console.WriteLine($"{affectedRows} Affected Rows");
+            }
+            Console.Write("\n");
+            
+        }
     }
 }

@@ -72,7 +72,7 @@ namespace ChatMessenger
         {
             Console.WriteLine("To Choose a user to send message press {a}");
             Console.WriteLine("To View the transacted data between the users press {b}");
-            Console.WriteLine("To View and Edit the transacted data between the users press {c}");
+            Console.WriteLine("To Edit the transacted data between the users press {c}");
         }
     }
 
@@ -91,14 +91,14 @@ namespace ChatMessenger
         {
             Console.WriteLine("To choose a user to send message press {a}");
             Console.WriteLine("To View the transacted data between the users press {b}");
-            Console.WriteLine("To View and Edit the transacted data between the users press {c}");
-            Console.WriteLine("To View, Edit and Delete the transacted data between the users press {d}");
+            Console.WriteLine("To Edit the transacted data between the users press {c}");
+            Console.WriteLine("To Delete the transacted data between the users press {d}");
         }
     }
 
 
 
-    public class SuperAdmin : ViewEditAdmin
+    public class SuperAdmin : ViewEditDeleteAdmin
     {
 
         public SuperAdmin(string NewUsernamame, int newId) : base(NewUsernamame, newId)
@@ -115,8 +115,8 @@ namespace ChatMessenger
         {
             Console.WriteLine("To choose a user to send message press {a}");
             Console.WriteLine("To View the transacted data between the users press {b}");
-            Console.WriteLine("To View and Edit the transacted data between the users press {c}");
-            Console.WriteLine("To View, Edit and Delete the transacted data between the users press {d}");
+            Console.WriteLine("To Edit the transacted data between the users press {c}");
+            Console.WriteLine("To Delete the transacted data between the users press {d}");
             Console.WriteLine("To create a user press {e}");
             Console.WriteLine("To view the users press {f}");
             Console.WriteLine("To delete a user press {g}");

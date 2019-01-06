@@ -21,7 +21,9 @@ namespace ChatMessenger
                 int ReceiverId = Convert.ToInt32(receiverId.FirstOrDefault());
                 int userId = ApplicationsMenus.userId;
                 Console.Clear();
-                Message.SendMessageMethod(userId, ReceiverId, Username);
+                Console.WriteLine($"Write a message to {Username}, the maximun text limited to 250 characters");
+                Console.WriteLine("\n");
+                Message.SendMessageMethod(userId, ReceiverId);
             }
         }
 
@@ -115,24 +117,44 @@ namespace ChatMessenger
                     .Select(x => x.username)
                     .FirstOrDefault();
 
-                Console.WriteLine("From: " + Sender + " To: " + receiver + " Message: " + m.messageData);
+                Console.WriteLine("Id: " + m.id + " - From: " + Sender + " - To: " + receiver + " - Message: " + m.messageData);
             }
             Console.Write("\n");
             Console.WriteLine("Press any key to return back");
             Console.ReadKey();
             Console.Clear();
-
         }
 
 
         public static void EditMessageMethod()
         {
+            string cmd = "SELECT * FROM messages WHERE deleted = 0";
+            IEnumerable<dynamic> messages = DatabasesAccess.ReturnQueryDatabase(cmd);
+            Console.Write("Type the id of message you want to update: ");
+            int id = int.Parse(Console.ReadLine());
 
+            var senderId = messages
+                    .Where(x => x.id == id)
+                    .Select(x => x.senderId);
+            int SenderId = Convert.ToInt32(senderId.FirstOrDefault());
+
+            var receiverId = messages
+                .Where(x => x.id == id)
+                .Select(x => x.receiverId);
+            int ReceiverId = Convert.ToInt32(receiverId.FirstOrDefault());
+            DatabasesAccess.DeleteMessagesDatabase(id);
+            Console.WriteLine($"Write the new message the maximun text limited to 250 characters");
+            Console.WriteLine("\n");
+            Message.SendMessageMethod(SenderId, ReceiverId);
         }
 
         public static void DeleteMessageMethod()
         {
-
+            //ViewMessageMethod();
+            Console.Write("Type the id of message you want to delete: ");
+            int id = int.Parse(Console.ReadLine());
+            //IEnumerable<dynamic> messages = DatabasesAccess.ReturnQueryDatabase(cmd);
+            DatabasesAccess.DeleteMessagesDatabase(id);
         }
 
 
