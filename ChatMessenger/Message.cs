@@ -1,4 +1,6 @@
 ﻿using System;
+using System.Collections.Generic;
+using System.Linq;
 
 namespace ChatMessenger
 {
@@ -16,7 +18,7 @@ namespace ChatMessenger
             _receiverId = receiverId;
             _Username = Username;
         }
-        
+
 
 
         public static void SendMessageMethod(int userId, int receiverId)
@@ -26,6 +28,7 @@ namespace ChatMessenger
             {
                 Console.Clear();
                 DatabasesAccess.InsertMessagesDatabase(userId, receiverId, message);
+                FindUserNameMethod(userId, receiverId, message);
             }
             else
             {
@@ -41,9 +44,27 @@ namespace ChatMessenger
 
 
 
-        public static void ReadMessageMethod(int userId, int receiverId, string username)
+        public static void FindUserNameMethod(int SenderId, int receiverId, string message)
         {
+            string Sender;
+            string receiver;
+            string cmd = "select * from users where deleted = 0";
+            IEnumerable<dynamic> users = DatabasesAccess.ReturnQueryDatabase(cmd);
+            cmd = "SELECT * FROM messages WHERE deleted = 0";
+            IEnumerable<dynamic> messages = DatabasesAccess.ReturnQueryDatabase(cmd);
 
+            Sender = users
+                .Where(x => SenderId == x.id)
+                .Select(x => x.username)
+                .FirstOrDefault();
+            Console.WriteLine(Sender);
+            Console.ReadKey();
+            receiver = users
+                .Where(x => receiverId == x.id)
+                .Select(x => x.username)
+                .FirstOrDefault();
+            
+            FilesAccess.Files(Sender, receiver, message);
         }
-    }   
+    }
 }

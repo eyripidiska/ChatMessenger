@@ -24,6 +24,7 @@ namespace ChatMessenger
 
         public virtual void PublicMenuMethod()
         {
+            Console.WriteLine("For logout press {x}");
             Console.WriteLine("To choose a user to send message press {a}");
         }
     }
@@ -37,6 +38,7 @@ namespace ChatMessenger
             _Id = newId;
             _Name = NewUsernamame;
             _TypeOfUser = UserType.User;
+            application.Add("x", LoginScreen.LoginMethod);
             application.Add("a", ApplicationsMenus.MessageMenuMethod);
         }
     }
@@ -53,6 +55,7 @@ namespace ChatMessenger
 
         public override void PublicMenuMethod()
         {
+            Console.WriteLine("For logout press {x}");
             Console.WriteLine("To choose a user to send message press {a}");
             Console.WriteLine("To View the transacted data between the users press {b}");
         }
@@ -70,6 +73,7 @@ namespace ChatMessenger
 
         public override void PublicMenuMethod()
         {
+            Console.WriteLine("For logout press {x}");
             Console.WriteLine("To Choose a user to send message press {a}");
             Console.WriteLine("To View the transacted data between the users press {b}");
             Console.WriteLine("To Edit the transacted data between the users press {c}");
@@ -89,6 +93,7 @@ namespace ChatMessenger
 
         public override void PublicMenuMethod()
         {
+            Console.WriteLine("For logout press {x}");
             Console.WriteLine("To choose a user to send message press {a}");
             Console.WriteLine("To View the transacted data between the users press {b}");
             Console.WriteLine("To Edit the transacted data between the users press {c}");
@@ -113,6 +118,7 @@ namespace ChatMessenger
 
         public override void PublicMenuMethod()
         {
+            Console.WriteLine("For logout press {x}");
             Console.WriteLine("To choose a user to send message press {a}");
             Console.WriteLine("To View the transacted data between the users press {b}");
             Console.WriteLine("To Edit the transacted data between the users press {c}");

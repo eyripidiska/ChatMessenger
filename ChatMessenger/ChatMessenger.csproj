@@ -47,6 +47,7 @@
   <ItemGroup>
     <Compile Include="ApplicationsMenus.cs" />
     <Compile Include="DatabasesAccess.cs" />
+    <Compile Include="FilesAccess.cs" />
     <Compile Include="HelpMethods.cs" />
     <Compile Include="LoginScreen.cs" />
     <Compile Include="MainApplication.cs" />
