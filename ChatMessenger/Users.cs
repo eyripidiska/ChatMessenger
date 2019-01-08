@@ -50,7 +50,7 @@ namespace ChatMessenger
         public ViewAdmin(string NewUsernamame, int newId) : base(NewUsernamame, newId)
         {
             _TypeOfUser = UserType.ViewAdmin;
-            application.Add("b", MainApplication.ViewMessageMethod);
+            application.Add("b", MainApplication.ViewAllMessageMethod);
         }
 
         public override void PublicMenuMethod()

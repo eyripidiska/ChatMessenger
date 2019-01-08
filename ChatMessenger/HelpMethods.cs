@@ -36,31 +36,25 @@ namespace ChatMessenger
 
 
 
-        public static string ReturnNoExistUser(IEnumerable<dynamic> users)
+        public static bool CheckNoExistUser(string username)
         {
-            bool UserExist;
-            Console.Write("Type the username: ");
-            string username = Console.ReadLine();
-            do
+            string cmd = "select * from users";
+            IEnumerable<dynamic> users = DatabasesAccess.ReturnQueryDatabase(cmd);
+            bool UserExist = users
+                .Any(x => x.username == username && x.deleted == false);
+
+            if (UserExist == true)
             {
-                UserExist = users
-               .Any(x => x.username == username && x.deleted == false);
-                
-                if (UserExist == true)
-                {
-                    Console.Clear();
-                    Console.ForegroundColor = ConsoleColor.Red;
-                    Console.Write("The user exist type another username: ");
-                    Console.ForegroundColor = ConsoleColor.White;
-                    username = Console.ReadLine();
-                    UserExist = true;
-                }
+                Console.Clear();
+                Console.ForegroundColor = ConsoleColor.Red;
+                Console.Write("The user exist");
+                Console.ForegroundColor = ConsoleColor.White;
+                Console.WriteLine("\n");
             }
-            while (UserExist == true);
-            return username;
+            return UserExist;
         }
 
-        public static bool ReturnExistUser(IEnumerable<dynamic> users, string username)
+        public static bool CheckExistUser(IEnumerable<dynamic> users, string username)
         {
             bool UserExist = false;
 
@@ -80,9 +74,8 @@ namespace ChatMessenger
         {
             string cmd = "select * from users";
             IEnumerable<dynamic> users = DatabasesAccess.ReturnQueryDatabase(cmd);
-            bool UserExist = false;
 
-            UserExist = users
+            bool UserExist = users
                 .Any(x => x.username == username && x.deleted == false);
 
             return UserExist;
@@ -90,8 +83,18 @@ namespace ChatMessenger
 
 
 
+        public static bool CheckExistMessage(int id)
+        {
+            string cmd = "SELECT * FROM messages";
+            IEnumerable<dynamic> messages = DatabasesAccess.ReturnQueryDatabase(cmd);
+            bool MessageExist = messages
+                .Any(x => x.id == id && x.deleted == false);
+            return MessageExist;
+        }
 
-        public static void IncorrectMessageMethod()
+
+
+            public static void IncorrectMessageMethod()
         {
             Console.Clear();
             Console.ForegroundColor = ConsoleColor.Red;
@@ -121,6 +124,13 @@ namespace ChatMessenger
         }
 
 
-
+        public static void MessageDoesNotExistMethod()
+        {
+            Console.Clear();
+            Console.ForegroundColor = ConsoleColor.Red;
+            Console.WriteLine("The message does not exist");
+            Console.ForegroundColor = ConsoleColor.White;
+            Console.Write("\n");
+        }
     }
 }

@@ -60,15 +60,13 @@ namespace ChatMessenger
                 string password = MaskMethod();
                 Console.WriteLine("\n");
                 string encryptedPassword = salt.ToString() + password;
-
-                // step 1, calculate MD5 hash from input
+                
                 MD5 md5 = System.Security.Cryptography.MD5.Create();
 
                 byte[] inputBytes = System.Text.Encoding.ASCII.GetBytes(encryptedPassword);
 
                 byte[] hash = md5.ComputeHash(inputBytes);
-
-                // step 2, convert byte array to hex string
+                
                 StringBuilder sb = new StringBuilder();
 
                 for (int i = 0; i < hash.Length; i++)
@@ -106,7 +104,6 @@ namespace ChatMessenger
             do
             {
                 keyInfo = Console.ReadKey(true);
-                // Skip if Backspace or Enter is Pressed
                 if (keyInfo.Key != ConsoleKey.Backspace && keyInfo.Key != ConsoleKey.Enter)
                 {
                     password += keyInfo.KeyChar;
@@ -114,7 +111,6 @@ namespace ChatMessenger
                 }
                 else if (keyInfo.Key == ConsoleKey.Backspace && password.Length > 0)
                 {
-                    // Remove last charcter if Backspace is Pressed
                     password = password.Substring(0, (password.Length - 1));
                     Console.Write("\b \b");
                 }

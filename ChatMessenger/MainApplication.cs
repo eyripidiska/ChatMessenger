@@ -12,7 +12,7 @@ namespace ChatMessenger
             IEnumerable<dynamic> users = DatabasesAccess.ReturnQueryDatabase(cmd);
             Console.Write("Type the user you want to exchange messages: ");
             string Username = Console.ReadLine();
-            bool UserExist = HelpMethods.ReturnExistUser(users, Username);
+            bool UserExist = HelpMethods.CheckExistUser(users, Username);
             if (UserExist == true)
             {
                 var receiverId = users
@@ -25,77 +25,51 @@ namespace ChatMessenger
                 Console.WriteLine("\n");
                 Message.SendMessageMethod(userId, ReceiverId);
             }
-        }
-
-
-        public static void ViewMessage()
-        {
-            string cmd = "select * from users where deleted = 0";
-            IEnumerable<dynamic> users = DatabasesAccess.ReturnQueryDatabase(cmd);
-            Console.Write("Type the user you want to read the messages: ");
-            string Username = Console.ReadLine();
-            bool existUser = HelpMethods.ReturnExistUser(users, Username);
-            if (existUser == true)
+            else
             {
-                var receiverId = users
-                    .Where(x => x.username == Username)
-                    .Select(x => x.id);
-                int ReceiverId = Convert.ToInt32(receiverId.FirstOrDefault());
-                int userId = ApplicationsMenus.userId;
-                Console.Clear();
-                cmd = "SELECT * FROM messages WHERE((senderId = @senderId AND receiverId = @receiverId) OR (senderId = @receiverId AND receiverId = @senderId)) AND deleted = 0;";
-                IEnumerable<dynamic> messages = DatabasesAccess.ReadMessagesDatabase(cmd, userId, ReceiverId);
-                foreach(var m in messages)
-                {
-                    if (m.senderId == userId)
-                    {
-                        Console.WriteLine("You" + ": " + m.messageData);
-                    }
-                    else
-                    {
-                       Console.WriteLine(Username + ": " + m.messageData);
-                    }
-                }
-                HelpMethods.ReturnBackMessageMethod();
+                HelpMethods.UserDoesNotExistMessageMethod();
             }
         }
 
+        //bag
+        public static void ViewMessage()
+        {
+            string cmd = "select * from users";
+            IEnumerable<dynamic> users = DatabasesAccess.ReturnQueryDatabase(cmd);
+            Console.Write("Type the user you want to read the messages: ");
+            string Username = Console.ReadLine();
 
-        //public static void ViewNewMessage()
-        //{
-        //    string cmd1 = "SELECT * FROM messages WHERE receiverId = @senderId AND deleted = 0 AND readed = 0;";
-        //    string cmd2 = "select * from users where deleted = 0";
-        //    int userId = ApplicationsMenus.userId;
-        //    int SenderId;
-        //    string username;
-        //    IEnumerable<dynamic> users = DatabasesAccess.ReturnQueryDatabase(cmd2);
-        //    IEnumerable<dynamic> messages = DatabasesAccess.ReadMessagesDatabase(cmd1, userId);
-        //    Console.Clear();
-        //    foreach (var m in messages)
-        //    {
-        //        SenderId = m.senderId;
-        //        username = users
-        //            .Where(x => SenderId == x.id)
-        //            .Select(x => x.username)
-        //            .FirstOrDefault();
-
-        //        Console.WriteLine(username + ": " + m.messageData);
-        //        Console.Write("\n");
-        //        Console.WriteLine("Press any key to read the next");
-        //        Console.ReadLine();
-        //        Console.Clear();
-        //    }
-        //}
+            var receiverId = users
+                .Where(x => x.username == Username)
+                .Select(x => x.id);
+            int ReceiverId = Convert.ToInt32(receiverId.FirstOrDefault());
+            int userId = ApplicationsMenus.userId;
+            Console.Clear();
+            cmd = "SELECT * FROM messages WHERE((senderId = @senderId AND receiverId = @receiverId) OR (senderId = @receiverId AND receiverId = @senderId)) AND deleted = 0;";
+            IEnumerable<dynamic> messages = DatabasesAccess.ReadMessagesDatabase(cmd, userId, ReceiverId);
+            foreach (var m in messages)
+            {
+                if (m.senderId == userId)
+                {
+                    Console.WriteLine("You" + ": " + m.messageData);
+                }
+                else
+                {
+                    Console.WriteLine(Username + ": " + m.messageData);
+                }
+            }
+            HelpMethods.ReturnBackMessageMethod();
+        }
 
 
-        public static void ViewMessageMethod()
+        public static void ViewAllMessageMethod()
         {
             Console.Clear();
             int SenderId;
             int receiverId;
             string Sender;
             string receiver;
-            string cmd = "select * from users where deleted = 0";
+            string cmd = "select * from users";
             IEnumerable<dynamic> users = DatabasesAccess.ReturnQueryDatabase(cmd);
             cmd = "SELECT * FROM messages WHERE deleted = 0";
             IEnumerable<dynamic> messages = DatabasesAccess.ReturnQueryDatabase(cmd);
@@ -126,40 +100,60 @@ namespace ChatMessenger
             IEnumerable<dynamic> messages = DatabasesAccess.ReturnQueryDatabase(cmd);
             Console.Write("Type the id of message you want to update: ");
             int id = int.Parse(Console.ReadLine());
+            bool MessageExist = HelpMethods.CheckExistMessage(id);
+            if (MessageExist == true)
+            {
+                var senderId = messages
+                      .Where(x => x.id == id)
+                      .Select(x => x.senderId);
+                int SenderId = Convert.ToInt32(senderId.FirstOrDefault());
 
-            var senderId = messages
+                var receiverId = messages
                     .Where(x => x.id == id)
-                    .Select(x => x.senderId);
-            int SenderId = Convert.ToInt32(senderId.FirstOrDefault());
+                    .Select(x => x.receiverId);
+                int ReceiverId = Convert.ToInt32(receiverId.FirstOrDefault());
+                DatabasesAccess.DeleteMessagesDatabase(id);
+                Console.Clear();
+                Console.WriteLine($"Write the new message the maximun text limited to 250 characters");
+                Console.WriteLine("\n");
+                Message.SendMessageMethod(SenderId, ReceiverId);
+            }
+            else
+            {
+                HelpMethods.MessageDoesNotExistMethod();
+            }
 
-            var receiverId = messages
-                .Where(x => x.id == id)
-                .Select(x => x.receiverId);
-            int ReceiverId = Convert.ToInt32(receiverId.FirstOrDefault());
-            DatabasesAccess.DeleteMessagesDatabase(id);
-            Console.Clear();
-            Console.WriteLine($"Write the new message the maximun text limited to 250 characters");
-            Console.WriteLine("\n");
-            Message.SendMessageMethod(SenderId, ReceiverId);
         }
 
         public static void DeleteMessageMethod()
         {
             Console.Write("Type the id of message you want to delete: ");
             int id = int.Parse(Console.ReadLine());
-            DatabasesAccess.DeleteMessagesDatabase(id);
+            bool MessageExist = HelpMethods.CheckExistMessage(id);
+            if (MessageExist == true)
+            {
+                Console.Clear();
+                DatabasesAccess.DeleteMessagesDatabase(id);
+            }
+            else
+            {
+                HelpMethods.MessageDoesNotExistMethod();
+            }
         }
 
 
         public static void CreateUserMethod()
         {
-            string cmd = "select * from users";
-            IEnumerable<dynamic> users = DatabasesAccess.ReturnQueryDatabase(cmd);
-            string username = HelpMethods.ReturnNoExistUser(users);
-            string password = HelpMethods.SamePasswordMethod();
-            Console.Clear();
-            string role = ApplicationsMenus.RoleMenuMethod();
-            DatabasesAccess.InsertUsersDatabase(username, password, role);
+            Console.Write("Type the username: ");
+            string username = Console.ReadLine();
+            bool userExist = HelpMethods.CheckNoExistUser(username);
+            if (userExist == false)
+            {
+                string password = HelpMethods.SamePasswordMethod();
+                Console.Clear();
+                string role = ApplicationsMenus.RoleMenuMethod();
+                DatabasesAccess.InsertUsersDatabase(username, password, role);
+            }
         }
 
 

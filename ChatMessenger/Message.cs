@@ -6,20 +6,7 @@ namespace ChatMessenger
 {
     public class Message
     {
-        public int _userId { get; set; }
-        public int _receiverId { get; set; }
-        public string _Username { get; set; }
-
-
-
-        public Message(int userId, int receiverId, string Username)
-        {
-            _userId = userId;
-            _receiverId = receiverId;
-            _Username = Username;
-        }
-
-
+        
 
         public static void SendMessageMethod(int userId, int receiverId)
         {
@@ -57,8 +44,6 @@ namespace ChatMessenger
                 .Where(x => SenderId == x.id)
                 .Select(x => x.username)
                 .FirstOrDefault();
-            Console.WriteLine(Sender);
-            Console.ReadKey();
             receiver = users
                 .Where(x => receiverId == x.id)
                 .Select(x => x.username)

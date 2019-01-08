@@ -11,7 +11,6 @@ namespace ChatMessenger
             if (!File.Exists(path + Sender + "-" + receiver + ".txt") && !File.Exists(path + receiver + "-" + Sender + ".txt"))
             {
                 File.Create(path +  Sender + "-" + receiver + ".txt");
-                Console.ReadKey();
                 StreamWriter file = new StreamWriter((path + Sender + "-" + receiver + ".txt"), true);
                 
                 file.Write("Date: " + DateTime.Now.ToString("yyyy-MM-dd hh:mm:ss") + " - From: " + Sender + " - To: " + receiver + " - Message: " +  message + "\r\n");
@@ -29,7 +28,6 @@ namespace ChatMessenger
                 file.Write("Date: " + DateTime.Now.ToString("yyyy-MM-dd hh:mm:ss") + " - From: " + Sender + " - To: " + receiver + " - Message: " + message + "\r\n");
                 file.Close();
             }
-            Console.WriteLine(DateTime.Now.ToString("yyyy-MM-dd hh:mm:ss"));
         }
     }
 }
