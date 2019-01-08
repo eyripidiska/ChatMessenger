@@ -40,8 +40,8 @@ namespace ChatMessenger
                 {"View-Edit-Delete Admin", new ViewEditDeleteAdmin(username, Id)},
                 {"Super Admin", new SuperAdmin(username, Id)}
             };
-            Console.Clear();
             user = TypeOfUsers[TypeOfUser];
+            Console.Clear();
             Console.WriteLine($"Welcome {username}");
             Console.Write("\n");
             while (true)
@@ -57,11 +57,7 @@ namespace ChatMessenger
                 }
                 else
                 {
-                    Console.Clear();
-                    Console.ForegroundColor = ConsoleColor.Red;
-                    Console.WriteLine("That is an incorrect option entry, please try again.");
-                    Console.ForegroundColor = ConsoleColor.White;
-                    Console.Write("\n");
+                    IncorrectMessageMethod();
                 }
             }
         }
@@ -84,11 +80,7 @@ namespace ChatMessenger
             }
             else
             {
-                Console.Clear();
-                Console.ForegroundColor = ConsoleColor.Red;
-                Console.WriteLine("That is an incorrect option entry, please try again.");
-                Console.ForegroundColor = ConsoleColor.White;
-                Console.Write("\n");
+                IncorrectMessageMethod();
             }
         }
 
@@ -115,13 +107,21 @@ namespace ChatMessenger
                 }
                 else
                 {
-                    Console.Clear();
-                    Console.ForegroundColor = ConsoleColor.Red;
-                    Console.WriteLine("That is an incorrect option entry, please try again.");
-                    Console.ForegroundColor = ConsoleColor.White;
-                    Console.Write("\n");
+                    IncorrectMessageMethod();
                 }
             }
+        }
+
+
+
+
+        public static void IncorrectMessageMethod()
+        {
+            Console.Clear();
+            Console.ForegroundColor = ConsoleColor.Red;
+            Console.WriteLine("That is an incorrect option entry, please try again.");
+            Console.ForegroundColor = ConsoleColor.White;
+            Console.Write("\n");
         }
     }
 }
