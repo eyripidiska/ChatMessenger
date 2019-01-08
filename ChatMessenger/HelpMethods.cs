@@ -69,19 +69,17 @@ namespace ChatMessenger
 
             if (UserExist == false)
             {
-                Console.Clear();
-                Console.ForegroundColor = ConsoleColor.Red;
-                Console.WriteLine("The user does not exist");
-                Console.ForegroundColor = ConsoleColor.White;
-                Console.Write("\n");
+                UserDoesNotExistMessageMethod();
             }
             return UserExist;
         }
 
 
 
-        public static bool CheckExistUser(IEnumerable<dynamic> users, string username)
+        public static bool CheckExistUser(string username)
         {
+            string cmd = "select * from users";
+            IEnumerable<dynamic> users = DatabasesAccess.ReturnQueryDatabase(cmd);
             bool UserExist = false;
 
             UserExist = users
@@ -89,5 +87,40 @@ namespace ChatMessenger
 
             return UserExist;
         }
+
+
+
+
+        public static void IncorrectMessageMethod()
+        {
+            Console.Clear();
+            Console.ForegroundColor = ConsoleColor.Red;
+            Console.WriteLine("That is an incorrect option entry, please try again.");
+            Console.ForegroundColor = ConsoleColor.White;
+            Console.Write("\n");
+        }
+
+
+
+
+        public static void UserDoesNotExistMessageMethod()
+        {
+            Console.Clear();
+            Console.ForegroundColor = ConsoleColor.Red;
+            Console.WriteLine("The user does not exist");
+            Console.ForegroundColor = ConsoleColor.White;
+            Console.Write("\n");
+        }
+
+        public static void ReturnBackMessageMethod()
+        {
+            Console.Write("\n");
+            Console.WriteLine("Press any key to return back");
+            Console.ReadKey();
+            Console.Clear();
+        }
+
+
+
     }
 }

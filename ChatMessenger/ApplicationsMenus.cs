@@ -57,7 +57,7 @@ namespace ChatMessenger
                 }
                 else
                 {
-                    IncorrectMessageMethod();
+                    HelpMethods.IncorrectMessageMethod();
                 }
             }
         }
@@ -80,7 +80,7 @@ namespace ChatMessenger
             }
             else
             {
-                IncorrectMessageMethod();
+                HelpMethods.IncorrectMessageMethod();
             }
         }
 
@@ -107,21 +107,11 @@ namespace ChatMessenger
                 }
                 else
                 {
-                    IncorrectMessageMethod();
+                    HelpMethods.IncorrectMessageMethod();
                 }
             }
         }
 
 
-
-
-        public static void IncorrectMessageMethod()
-        {
-            Console.Clear();
-            Console.ForegroundColor = ConsoleColor.Red;
-            Console.WriteLine("That is an incorrect option entry, please try again.");
-            Console.ForegroundColor = ConsoleColor.White;
-            Console.Write("\n");
-        }
     }
 }

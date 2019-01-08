@@ -56,10 +56,7 @@ namespace ChatMessenger
                        Console.WriteLine(Username + ": " + m.messageData);
                     }
                 }
-                Console.Write("\n");
-                Console.WriteLine("Press any key to return back");
-                Console.ReadLine();
-                Console.Clear();
+                HelpMethods.ReturnBackMessageMethod();
             }
         }
 
@@ -119,10 +116,7 @@ namespace ChatMessenger
 
                 Console.WriteLine("Id: " + m.id + " - From: " + Sender + " - To: " + receiver + " - Message: " + m.messageData);
             }
-            Console.Write("\n");
-            Console.WriteLine("Press any key to return back");
-            Console.ReadKey();
-            Console.Clear();
+            HelpMethods.ReturnBackMessageMethod();
         }
 
 
@@ -143,6 +137,7 @@ namespace ChatMessenger
                 .Select(x => x.receiverId);
             int ReceiverId = Convert.ToInt32(receiverId.FirstOrDefault());
             DatabasesAccess.DeleteMessagesDatabase(id);
+            Console.Clear();
             Console.WriteLine($"Write the new message the maximun text limited to 250 characters");
             Console.WriteLine("\n");
             Message.SendMessageMethod(SenderId, ReceiverId);
@@ -150,10 +145,8 @@ namespace ChatMessenger
 
         public static void DeleteMessageMethod()
         {
-            //ViewMessageMethod();
             Console.Write("Type the id of message you want to delete: ");
             int id = int.Parse(Console.ReadLine());
-            //IEnumerable<dynamic> messages = DatabasesAccess.ReturnQueryDatabase(cmd);
             DatabasesAccess.DeleteMessagesDatabase(id);
         }
 
@@ -181,40 +174,34 @@ namespace ChatMessenger
             {
                 Console.WriteLine("Username: " + u.username + " - " + "Role: " +  u.role);
             }
-            Console.Write("\n");
-            Console.WriteLine("Press any key to return back");
-            Console.ReadKey();
-            Console.Clear();
+            HelpMethods.ReturnBackMessageMethod();
         }
 
 
 
         public static void DeleteUserMethod()
         {
-            string cmd = "select * from users";
             Console.Write("Type the username you want to delete: ");
             string username = Console.ReadLine();
-            IEnumerable<dynamic> users = DatabasesAccess.ReturnQueryDatabase(cmd);
-            bool UserExist = HelpMethods.CheckExistUser(users, username);
-            if (UserExist == false)
+            bool UserExist = HelpMethods.CheckExistUser(username);
+            if (UserExist == true)
             {
                 Console.Clear();
-                Console.Write("The user does not exist");
-                Console.WriteLine("\n");
+                DatabasesAccess.DeleteUsersDatabase(username);
             }
-            Console.Clear();
-            DatabasesAccess.DeleteUsersDatabase(username);
+            else
+            {
+                HelpMethods.UserDoesNotExistMessageMethod();
+            }
         }
 
 
 
         public static void UpdatePasswordMethod()
         {
-            string cmd = "select * from users";
             Console.Write("Type the username you want to update: ");
             string username = Console.ReadLine();
-            IEnumerable<dynamic> users = DatabasesAccess.ReturnQueryDatabase(cmd);
-            bool UserExist = HelpMethods.CheckExistUser(users, username);
+            bool UserExist = HelpMethods.CheckExistUser(username);
             if (UserExist == true)
             {
                 Console.Clear();
@@ -224,11 +211,7 @@ namespace ChatMessenger
             }
             else
             {
-                Console.Clear();
-                Console.ForegroundColor = ConsoleColor.Red;
-                Console.WriteLine("The user does not exist");
-                Console.ForegroundColor = ConsoleColor.White;
-                Console.Write("\n");
+                HelpMethods.UserDoesNotExistMessageMethod();
             }
         }
 
@@ -236,11 +219,9 @@ namespace ChatMessenger
 
         public static void UpdateRoleMethod()
         {
-            string cmd = "select * from users";
             Console.Write("Type the username you want to update: ");
             string username = Console.ReadLine();
-            IEnumerable<dynamic> users = DatabasesAccess.ReturnQueryDatabase(cmd);
-            bool UserExist = HelpMethods.CheckExistUser(users, username);
+            bool UserExist = HelpMethods.CheckExistUser(username);
             if (UserExist == true)
             {
                 Console.Clear();
@@ -249,11 +230,7 @@ namespace ChatMessenger
             }
             else
             {
-                Console.Clear();
-                Console.ForegroundColor = ConsoleColor.Red;
-                Console.WriteLine("The user does not exist");
-                Console.ForegroundColor = ConsoleColor.White;
-                Console.Write("\n");
+                HelpMethods.UserDoesNotExistMessageMethod();
             }
         }
     }
