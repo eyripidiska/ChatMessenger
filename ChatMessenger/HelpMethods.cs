@@ -69,6 +69,21 @@ namespace ChatMessenger
         }
 
 
+        public static bool CheckUser(IEnumerable<dynamic> users, string username)
+        {
+            bool UserExist = false;
+
+            UserExist = users
+                .Any(x => x.username == username);
+
+            if (UserExist == false)
+            {
+                UserDoesNotExistMessageMethod();
+            }
+            return UserExist;
+        }
+
+
 
         public static bool CheckExistUser(string username)
         {

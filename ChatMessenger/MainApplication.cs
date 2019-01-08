@@ -31,34 +31,37 @@ namespace ChatMessenger
             }
         }
 
-        //bag
+
         public static void ViewMessage()
         {
-            string cmd = "select * from users";
+            string cmd = "select * from users where deleted = 0";
             IEnumerable<dynamic> users = DatabasesAccess.ReturnQueryDatabase(cmd);
             Console.Write("Type the user you want to read the messages: ");
             string Username = Console.ReadLine();
-
-            var receiverId = users
-                .Where(x => x.username == Username)
-                .Select(x => x.id);
-            int ReceiverId = Convert.ToInt32(receiverId.FirstOrDefault());
-            int userId = ApplicationsMenus.userId;
-            Console.Clear();
-            cmd = "SELECT * FROM messages WHERE((senderId = @senderId AND receiverId = @receiverId) OR (senderId = @receiverId AND receiverId = @senderId)) AND deleted = 0;";
-            IEnumerable<dynamic> messages = DatabasesAccess.ReadMessagesDatabase(cmd, userId, ReceiverId);
-            foreach (var m in messages)
+            bool existUser = HelpMethods.CheckExistUser(users, Username);
+            if (existUser == true)
             {
-                if (m.senderId == userId)
+                var receiverId = users
+                    .Where(x => x.username == Username)
+                    .Select(x => x.id);
+                int ReceiverId = Convert.ToInt32(receiverId.FirstOrDefault());
+                int userId = ApplicationsMenus.userId;
+                Console.Clear();
+                cmd = "SELECT * FROM messages WHERE((senderId = @senderId AND receiverId = @receiverId) OR (senderId = @receiverId AND receiverId = @senderId)) AND deleted = 0;";
+                IEnumerable<dynamic> messages = DatabasesAccess.ReadMessagesDatabase(cmd, userId, ReceiverId);
+                foreach(var m in messages)
                 {
-                    Console.WriteLine("You" + ": " + m.messageData);
+                    if (m.senderId == userId)
+                    {
+                        Console.WriteLine("You" + ": " + m.messageData);
+                    }
+                    else
+                    {
+                       Console.WriteLine(Username + ": " + m.messageData);
+                    }
                 }
-                else
-                {
-                    Console.WriteLine(Username + ": " + m.messageData);
-                }
+                HelpMethods.ReturnBackMessageMethod();
             }
-            HelpMethods.ReturnBackMessageMethod();
         }
 
 
@@ -69,7 +72,7 @@ namespace ChatMessenger
             int receiverId;
             string Sender;
             string receiver;
-            string cmd = "select * from users";
+            string cmd = "select * from users where deleted = 0";
             IEnumerable<dynamic> users = DatabasesAccess.ReturnQueryDatabase(cmd);
             cmd = "SELECT * FROM messages WHERE deleted = 0";
             IEnumerable<dynamic> messages = DatabasesAccess.ReturnQueryDatabase(cmd);
