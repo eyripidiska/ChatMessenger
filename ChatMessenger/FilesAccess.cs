@@ -5,26 +5,23 @@ namespace ChatMessenger
 {
     class FilesAccess
     {
-        public static void Files(string Sender, string receiver, string message)
+        public static void Files(string Sender, string receiver, string message, int SenderId, int receiverId)
         {
-            string path = @"C:\Users\EVRIPIDIS\Desktop\ChatMessenger\";
-            if (!File.Exists(path + Sender + "-" + receiver + ".txt") && !File.Exists(path + receiver + "-" + Sender + ".txt"))
+            string path = @"C:\Users\EVRI\Desktop\ChatMessenger-masternn\messages\";
+            if (!File.Exists(path + SenderId + "-" + receiverId + ".txt") && !File.Exists(path + receiverId + "-" + SenderId + ".txt"))
             {
-                File.Create(path +  Sender + "-" + receiver + ".txt");
-                StreamWriter file = new StreamWriter((path + Sender + "-" + receiver + ".txt"), true);
-                
-                file.Write("Date: " + DateTime.Now.ToString("yyyy-MM-dd hh:mm:ss") + " - From: " + Sender + " - To: " + receiver + " - Message: " +  message + "\r\n");
-                file.Close();
+                var myFile = File.Create(path + SenderId + "-" + receiverId + ".txt");
+                myFile.Close();
             }
-            else if (File.Exists(path + Sender + "-" + receiver + ".txt"))
+            if (File.Exists(path + SenderId + "-" + receiverId + ".txt"))
             {
-                TextWriter file = new StreamWriter((path + Sender + "-" + receiver + ".txt"), true);
+                TextWriter file = new StreamWriter((path + SenderId + "-" + receiverId + ".txt"), true);
                 file.Write("Date: " + DateTime.Now.ToString("yyyy-MM-dd hh:mm:ss") + " - From: " + Sender + " - To: " + receiver + " - Message: " + message + "\r\n");
                 file.Close();
             }
-            else if (File.Exists(path + receiver + "-" + Sender + ".txt"))
+            else if (File.Exists(path + receiverId + "-" + SenderId + ".txt"))
             {
-                TextWriter file = new StreamWriter((path + receiver + "-" + Sender + ".txt"), true);
+                TextWriter file = new StreamWriter((path + receiverId + "-" + SenderId + ".txt"), true);
                 file.Write("Date: " + DateTime.Now.ToString("yyyy-MM-dd hh:mm:ss") + " - From: " + Sender + " - To: " + receiver + " - Message: " + message + "\r\n");
                 file.Close();
             }

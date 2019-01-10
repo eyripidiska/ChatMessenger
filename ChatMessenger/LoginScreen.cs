@@ -11,8 +11,7 @@ namespace ChatMessenger
         {
             bool foundPassword = false;
             string cmd = "select * from users";
-            Console.WriteLine("Login Screen");
-            Console.WriteLine("\n");
+            HelpMethods.LoginScreenMessageMethod();
             Console.Write("Username: ");
             string username = Console.ReadLine();
             IEnumerable<dynamic> users = DatabasesAccess.ReturnQueryDatabase(cmd);
@@ -26,9 +25,7 @@ namespace ChatMessenger
                         int salt = u.salt;
                         string TypeOfUser = u.role;
                         int Id = u.id;
-                        Console.Clear();
-                        Console.WriteLine("Login Screen");
-                        Console.Write("\n");
+                        HelpMethods.LoginScreenMessageMethod();
                         foundPassword = PasswordMethod(Password, salt);
                         Console.Write("\n");
                         Console.Clear();
@@ -37,9 +34,7 @@ namespace ChatMessenger
                 }
                 if (foundPassword == false)
                 {
-                    Console.Clear();
-                    Console.WriteLine("Login Screen");
-                    Console.Write("\n");
+                    HelpMethods.LoginScreenMessageMethod();
                     Console.ForegroundColor = ConsoleColor.Red;
                     Console.WriteLine("Incorrect username");
                     Console.ForegroundColor = ConsoleColor.White;
@@ -60,13 +55,13 @@ namespace ChatMessenger
                 string password = MaskMethod();
                 Console.WriteLine("\n");
                 string encryptedPassword = salt.ToString() + password;
-                
+
                 MD5 md5 = System.Security.Cryptography.MD5.Create();
 
                 byte[] inputBytes = System.Text.Encoding.ASCII.GetBytes(encryptedPassword);
 
                 byte[] hash = md5.ComputeHash(inputBytes);
-                
+
                 StringBuilder sb = new StringBuilder();
 
                 for (int i = 0; i < hash.Length; i++)
@@ -77,9 +72,7 @@ namespace ChatMessenger
 
                 if (encryptedPassword != Password)
                 {
-                    Console.Clear();
-                    Console.WriteLine("Login Screen");
-                    Console.Write("\n");
+                    HelpMethods.LoginScreenMessageMethod();
                     Console.ForegroundColor = ConsoleColor.Red;
                     Console.WriteLine("Incorrect password try again");
                     Console.ForegroundColor = ConsoleColor.White;

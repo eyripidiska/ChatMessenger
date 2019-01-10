@@ -6,7 +6,7 @@ namespace ChatMessenger
 {
     public class Message
     {
-        
+
 
         public static void SendMessageMethod(int userId, int receiverId)
         {
@@ -48,8 +48,8 @@ namespace ChatMessenger
                 .Where(x => receiverId == x.id)
                 .Select(x => x.username)
                 .FirstOrDefault();
-            
-            FilesAccess.Files(Sender, receiver, message);
+
+            FilesAccess.Files(Sender, receiver, message, SenderId, receiverId);
         }
     }
 }

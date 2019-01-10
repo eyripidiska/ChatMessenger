@@ -107,9 +107,15 @@ namespace ChatMessenger
             return MessageExist;
         }
 
-
-
-            public static void IncorrectMessageMethod()
+        public static void LoginScreenMessageMethod()
+        {
+            Console.Clear();
+            Console.ForegroundColor = ConsoleColor.Green;
+            Console.WriteLine("Login Screen");
+            Console.ForegroundColor = ConsoleColor.White;
+            Console.Write("\n");
+        }
+        public static void IncorrectMessageMethod()
         {
             Console.Clear();
             Console.ForegroundColor = ConsoleColor.Red;

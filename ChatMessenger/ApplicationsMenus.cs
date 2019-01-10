@@ -8,6 +8,10 @@ namespace ChatMessenger
     {
         public static int userId { get; set; }
 
+        public delegate void menu();
+
+        public delegate void EditUser();
+
         private static Dictionary<string, string> roles = new Dictionary<string, string>()
         {
             {"a", "User"},
@@ -17,14 +21,25 @@ namespace ChatMessenger
             {"e", "Super Admin"}
         };
 
-        public delegate void menu();
+
 
         private static Dictionary<string, menu> menuMessages = new Dictionary<string, menu>()
         {
             {"a", MainApplication.SendMessage},
-            {"b", MainApplication.ViewMessage}
+            {"b", MainApplication.ViewMessage},
+            {"c", MainApplication.ViewAllMessageByUserMethod}
+
         };
 
+        public static Dictionary<string, EditUser> editUser = new Dictionary<string, EditUser>()
+        {
+            {"a", MainApplication.CreateUserMethod},
+            {"b", MainApplication.ViewUserMethod},
+            {"c", MainApplication.DeleteUserMethod},
+            {"d", MainApplication.UpdateUserNameMethod},
+            {"e", MainApplication.UpdatePasswordMethod},
+            {"f", MainApplication.UpdateRoleMethod},
+        };
 
 
         public static void ApplicationMenuMethod(string username, string TypeOfUser, int Id)
@@ -41,13 +56,17 @@ namespace ChatMessenger
             };
             user = TypeOfUsers[TypeOfUser];
             Console.Clear();
+            Console.ForegroundColor = ConsoleColor.Green;
             Console.WriteLine($"Welcome {username}");
+            Console.ForegroundColor = ConsoleColor.White;
             Console.Write("\n");
             while (true)
             {
                 user.PublicMenuMethod();
                 Console.Write("\n");
-                Console.Write("Press a letter: ");
+                Console.ForegroundColor = ConsoleColor.Green;
+                Console.Write("Enter an option: ");
+                Console.ForegroundColor = ConsoleColor.White;
                 string choice = Console.ReadLine();
                 if (user.application.ContainsKey(choice))
                 {
@@ -63,12 +82,17 @@ namespace ChatMessenger
 
 
 
-        public static void MessageMenuMethod()
+        public static void ChatMenuMethod()
         {
-            Console.WriteLine("To send a message to a user press {a}");
-            Console.WriteLine("To read a message from a user press {b}");
+            Console.WriteLine("CHAT MENU - Please choose an option.");
+            Console.WriteLine("====================================");
+            Console.WriteLine("a. Send Message");
+            Console.WriteLine("b. Read Message");
+            Console.WriteLine("c. Read All Message");
             Console.Write("\n");
-            Console.Write("Press a letter: ");
+            Console.ForegroundColor = ConsoleColor.Green;
+            Console.Write("Enter an option: ");
+            Console.ForegroundColor = ConsoleColor.White;
             string choice = Console.ReadLine();
 
             if (menuMessages.ContainsKey(choice))
@@ -83,19 +107,49 @@ namespace ChatMessenger
         }
 
 
+        public static void UserMenuMethod()
+        {
+            Console.WriteLine("USER MENU - Please choose an option.");
+            Console.WriteLine("====================================");
+            Console.WriteLine("a. Create new User");
+            Console.WriteLine("b. View Users");
+            Console.WriteLine("c. Delete Users");
+            Console.WriteLine("d. Update Username ");
+            Console.WriteLine("e. Update Password");
+            Console.WriteLine("f. Update Role");
+            Console.Write("\n");
+            Console.ForegroundColor = ConsoleColor.Green;
+            Console.Write("Enter an option: ");
+            Console.ForegroundColor = ConsoleColor.White;
+            string choice = Console.ReadLine();
+            if (editUser.ContainsKey(choice))
+            {
+                Console.Clear();
+                editUser[choice]();
+            }
+            else
+            {
+                HelpMethods.IncorrectMessageMethod();
+            }
+        }
+
 
 
         public static string RoleMenuMethod()
         {
             while (true)
             {
-                Console.WriteLine("To set user privilege press {a}");
-                Console.WriteLine("To set Admin with view privilege press {b}");
-                Console.WriteLine("To set Admin with view and edit privilege press {c}");
-                Console.WriteLine("To set Admin with view, Edit and Delete privilege press {d}");
-                Console.WriteLine("To set super Admin privilege press {e}");
+                Console.WriteLine("ROLES MENU - Please choose an option.");
+                Console.WriteLine("=====================================");
+                Console.WriteLine("a. Set User");
+                Console.WriteLine("b. Set Admin with View Privilege");
+                Console.WriteLine("c. Set Admin with View and Edit Privilege");
+                Console.WriteLine("d. Set Admin with View, Edit and Delete Privilege");
+                Console.WriteLine("e. Set Super Admin");
                 Console.Write("\n");
-                Console.Write("Press a letter: ");
+                Console.ForegroundColor = ConsoleColor.Green;
+                Console.Write("Enter an option: ");
+                Console.ForegroundColor = ConsoleColor.White;
                 string key = Console.ReadLine();
 
                 if (roles.ContainsKey(key))

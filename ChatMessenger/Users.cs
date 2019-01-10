@@ -24,8 +24,10 @@ namespace ChatMessenger
 
         public virtual void PublicMenuMethod()
         {
-            Console.WriteLine("For logout press {x}");
-            Console.WriteLine("To choose a user to send message press {a}");
+            Console.WriteLine("MAIN MENU - Please choose an option.");
+            Console.WriteLine("====================================");
+            Console.WriteLine("x. Log Off");
+            Console.WriteLine("a. Chat");
         }
     }
 
@@ -39,7 +41,7 @@ namespace ChatMessenger
             _Name = NewUsernamame;
             _TypeOfUser = UserType.User;
             application.Add("x", LoginScreen.LoginMethod);
-            application.Add("a", ApplicationsMenus.MessageMenuMethod);
+            application.Add("a", ApplicationsMenus.ChatMenuMethod);
         }
     }
 
@@ -55,9 +57,11 @@ namespace ChatMessenger
 
         public override void PublicMenuMethod()
         {
-            Console.WriteLine("For logout press {x}");
-            Console.WriteLine("To choose a user to send message press {a}");
-            Console.WriteLine("To View the transacted data between the users press {b}");
+            Console.WriteLine("MAIN MENU - Please choose an option.");
+            Console.WriteLine("====================================");
+            Console.WriteLine("x. Log Off");
+            Console.WriteLine("a. Chat");
+            Console.WriteLine("b. View Messages");
         }
     }
 
@@ -73,10 +77,12 @@ namespace ChatMessenger
 
         public override void PublicMenuMethod()
         {
-            Console.WriteLine("For logout press {x}");
-            Console.WriteLine("To Choose a user to send message press {a}");
-            Console.WriteLine("To View the transacted data between the users press {b}");
-            Console.WriteLine("To Edit the transacted data between the users press {c}");
+            Console.WriteLine("MAIN MENU - Please choose an option.");
+            Console.WriteLine("====================================");
+            Console.WriteLine("x. Log Off");
+            Console.WriteLine("a. Chat");
+            Console.WriteLine("b. View Messages");
+            Console.WriteLine("c. Edit Messages");
         }
     }
 
@@ -93,11 +99,13 @@ namespace ChatMessenger
 
         public override void PublicMenuMethod()
         {
-            Console.WriteLine("For logout press {x}");
-            Console.WriteLine("To choose a user to send message press {a}");
-            Console.WriteLine("To View the transacted data between the users press {b}");
-            Console.WriteLine("To Edit the transacted data between the users press {c}");
-            Console.WriteLine("To Delete the transacted data between the users press {d}");
+            Console.WriteLine("MAIN MENU - Please choose an option.");
+            Console.WriteLine("====================================");
+            Console.WriteLine("x. Log Off");
+            Console.WriteLine("a. Chat");
+            Console.WriteLine("b. View Messages");
+            Console.WriteLine("c. Edit Messages");
+            Console.WriteLine("d. Delete Messages");
         }
     }
 
@@ -109,25 +117,19 @@ namespace ChatMessenger
         public SuperAdmin(string NewUsernamame, int newId) : base(NewUsernamame, newId)
         {
             _TypeOfUser = UserType.SuperAdmin;
-            application.Add("e", MainApplication.CreateUserMethod);
-            application.Add("f", MainApplication.ViewUserMethod);
-            application.Add("g", MainApplication.DeleteUserMethod);
-            application.Add("h", MainApplication.UpdatePasswordMethod);
-            application.Add("i", MainApplication.UpdateRoleMethod);
+            application.Add("e", ApplicationsMenus.UserMenuMethod);
         }
 
         public override void PublicMenuMethod()
         {
-            Console.WriteLine("For logout press {x}");
-            Console.WriteLine("To choose a user to send message press {a}");
-            Console.WriteLine("To View the transacted data between the users press {b}");
-            Console.WriteLine("To Edit the transacted data between the users press {c}");
-            Console.WriteLine("To Delete the transacted data between the users press {d}");
-            Console.WriteLine("To create a user press {e}");
-            Console.WriteLine("To view the users press {f}");
-            Console.WriteLine("To delete a user press {g}");
-            Console.WriteLine("To update a user password press {h}");
-            Console.WriteLine("To update a user role press {i}");
+            Console.WriteLine("MAIN MENU - Please choose an option.");
+            Console.WriteLine("====================================");
+            Console.WriteLine("x. Log Off");
+            Console.WriteLine("a. Chat");
+            Console.WriteLine("b. View Messages");
+            Console.WriteLine("c. Edit Messages");
+            Console.WriteLine("d. Delete Messages");
+            Console.WriteLine("e. Edit Users");
         }
     }
 

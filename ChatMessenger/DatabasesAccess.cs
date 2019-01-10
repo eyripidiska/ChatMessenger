@@ -57,6 +57,22 @@ namespace ChatMessenger
         }
 
 
+        public static void UpdateUserNameDatabase(string username, string newUsername)
+        {
+            var connectionString = Properties.Settings.Default.connectionString;
+            SqlConnection dbcon = new SqlConnection(connectionString);
+            using (dbcon)
+            {
+                dbcon.Open();
+                var parameters = new DynamicParameters();
+                parameters.Add("username", username);
+                parameters.Add("newUsername", newUsername);
+                var affectedRows = dbcon.Execute("Update_UserName", parameters, commandType: CommandType.StoredProcedure);
+                Console.WriteLine($"{affectedRows} Affected Rows");
+            }
+            Console.Write("\n");
+        }
+
 
         public static void UpdatePasswordDatabase(string username, string password)
         {
@@ -126,7 +142,21 @@ namespace ChatMessenger
                 return table;
             }
         }
-        
+
+
+        public static IEnumerable<dynamic> ReadMessagesDatabase(string cmd, int userId)
+        {
+            var connectionString = Properties.Settings.Default.connectionString;
+            SqlConnection dbcon = new SqlConnection(connectionString);
+            using (dbcon)
+            {
+                dbcon.Open();
+                var parameters = new DynamicParameters();
+                parameters.Add("@receiverId", userId);
+                var table = dbcon.Query(cmd, parameters);
+                return table;
+            }
+        }
 
 
         public static void DeleteMessagesDatabase(int Id)
