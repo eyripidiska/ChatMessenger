@@ -122,5 +122,12 @@ GO
 
 EXECUTE Insert_Users @username='admin', @pass='admin', @role='Super Admin';
 
-TRUNCATE TABLE users
+CREATE PROCEDURE check_Password
+    @username VARCHAR(32), 
+    @pass VARCHAR(32)
+AS
+BEGIN
+	SELECT username FROM users
+	WHERE username = @username AND pass = HASHBYTES('MD5', CAST(salt AS VARCHAR(MAX)) + @pass) 
+END
 
