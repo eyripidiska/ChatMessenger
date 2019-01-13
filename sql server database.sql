@@ -1,5 +1,6 @@
 
 CREATE DATABASE ChatDB;
+
 USE ChatDB;
 
 CREATE TABLE users(
@@ -12,19 +13,6 @@ CREATE TABLE users(
                 PRIMARY KEY (id)
 );
 
-
-
---CREATE TABLE [messages](
---	id INT IDENTITY(1,1) NOT NULL,
---	dateOfSubmission DATETIME NOT NULL,
---	senderId INT NOT NULL,
---	receiverId INT NOT NULL,
---	messageData VARCHAR(250) NULL,
---	deleted BIT NOT NULL
---                PRIMARY KEY (id)
---);
-
-
 CREATE TABLE [messages](
 	id INT IDENTITY(1,1) NOT NULL,
 	dateOfSubmission DATETIME NOT NULL,
@@ -33,8 +21,8 @@ CREATE TABLE [messages](
 	messageData VARCHAR(250) NULL,
 	deleted BIT NOT NULL,
 	readed BIT NOT NULL
-                PRIMARY KEY (id)
-				CONSTRAINT fk1_messages FOREIGN KEY (senderId) REFERENCES users(id),
+                PRIMARY KEY (id),
+		CONSTRAINT fk1_messages FOREIGN KEY (senderId) REFERENCES users(id),
                 CONSTRAINT fk2_messages FOREIGN KEY (receiverId) REFERENCES users (id)
 );
 
@@ -117,10 +105,22 @@ CREATE PROCEDURE Insert_messages
 	@messageData VARCHAR(250)
 AS
 BEGIN
-		INSERT INTO [messages] (dateOfSubmission, senderId, receiverId, messageData, deleted)
-        VALUES(GETDATE(), @senderId, @receiverId, @messageData, 0)
+		INSERT INTO [messages] (dateOfSubmission, senderId, receiverId, messageData, deleted, readed)
+        VALUES(GETDATE(), @senderId, @receiverId, @messageData, 0, 0)
 END
 GO
+
+--Read messages
+CREATE PROCEDURE Read_messages
+    @id INT
+AS
+BEGIN
+		UPDATE [messages]
+		SET readed = 1
+		WHERE id=@id
+END
+GO
+
 
 --delete message
 CREATE PROCEDURE Delete_messages
@@ -133,7 +133,7 @@ BEGIN
 END
 GO
 
-EXECUTE Insert_Users @username='admin', @pass='admin', @role='Super Admin';
+
 
 --check password
 CREATE PROCEDURE check_Password
@@ -146,6 +146,15 @@ BEGIN
 	WHERE username = @username AND pass = CONVERT(VARCHAR(MAX),HASHBYTES('MD5', CAST(salt AS VARCHAR(MAX)) + @pass) ,2)
 END
 
+									     
+									     
+									     
+									     
 DECLARE @user VARCHAR(100) 
 EXECUTE check_Password  @username = 'admin', @pass = 'dmin' , @user = @user OUTPUT
 SELECT @user 
+
+									     
+									     
+EXECUTE Insert_Users @username='admin', @pass='admin', @role='Super Admin';									     
+									    
