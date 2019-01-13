@@ -10,31 +10,29 @@ namespace ChatMessenger
         public static void LoginMethod()
         {
             bool foundPassword = false;
-            string cmd = "select * from users";
-            HelpMethods.LoginScreenMessageMethod();
+            string cmd = "select id, username, role, deleted from users";
+            HelpMethods.LoginScreenMessage();
             Console.Write("Username: ");
             string username = Console.ReadLine();
-            IEnumerable<dynamic> users = DatabasesAccess.ReturnQueryDatabase(cmd);
+            IEnumerable<User> users = DatabasesAccess.ReturnUsersDatabase(cmd);
             while (foundPassword == false)
             {
                 foreach (var u in users)
                 {
                     if (username == u.username && u.deleted == false)
                     {
-                        string Password = u.pass;
-                        int salt = u.salt;
                         string TypeOfUser = u.role;
                         int Id = u.id;
-                        HelpMethods.LoginScreenMessageMethod();
-                        foundPassword = PasswordMethod(Password, salt);
+                        HelpMethods.LoginScreenMessage();
+                        foundPassword = PasswordMethod(username);
                         Console.Write("\n");
                         Console.Clear();
-                        ApplicationsMenus.ApplicationMenuMethod(username, TypeOfUser, Id);
+                        ApplicationsMenus.ApplicationMenu(username, TypeOfUser, Id);
                     }
                 }
                 if (foundPassword == false)
                 {
-                    HelpMethods.LoginScreenMessageMethod();
+                    HelpMethods.LoginScreenMessage();
                     Console.ForegroundColor = ConsoleColor.Red;
                     Console.WriteLine("Incorrect username");
                     Console.ForegroundColor = ConsoleColor.White;
@@ -47,32 +45,17 @@ namespace ChatMessenger
 
 
 
-        public static bool PasswordMethod(string Password, int salt)
+        public static bool PasswordMethod(String username)
         {
             bool foundPassword = false;
             while (foundPassword == false)
             {
                 string password = MaskMethod();
                 Console.WriteLine("\n");
-                string encryptedPassword = salt.ToString() + password;
-
-                MD5 md5 = System.Security.Cryptography.MD5.Create();
-
-                byte[] inputBytes = System.Text.Encoding.ASCII.GetBytes(encryptedPassword);
-
-                byte[] hash = md5.ComputeHash(inputBytes);
-
-                StringBuilder sb = new StringBuilder();
-
-                for (int i = 0; i < hash.Length; i++)
+                string correct = DatabasesAccess.ProcedureDatabases(username, password, "check_Password");
+                if (correct != username)
                 {
-                    sb.Append(hash[i].ToString("X2"));
-                }
-                encryptedPassword = sb.ToString();
-
-                if (encryptedPassword != Password)
-                {
-                    HelpMethods.LoginScreenMessageMethod();
+                    HelpMethods.LoginScreenMessage();
                     Console.ForegroundColor = ConsoleColor.Red;
                     Console.WriteLine("Incorrect password try again");
                     Console.ForegroundColor = ConsoleColor.White;

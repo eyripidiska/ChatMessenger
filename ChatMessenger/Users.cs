@@ -16,13 +16,21 @@ namespace ChatMessenger
 
     public abstract class Users
     {
-        public int _Id { get; set; }
-        public string _Name { get; set; }
-        public UserType _TypeOfUser { get; set; }
+        public int id { get; set; }
+
+        public string username { get; set; }
+
+        public string role { get; set; }
+
+        public UserType type { get; set; }
+
+        public bool deleted { get; set; }
+
+
 
         public Dictionary<string, Application> application = new Dictionary<string, Application>();
 
-        public virtual void PublicMenuMethod()
+        public virtual void PublicMenu()
         {
             Console.WriteLine("MAIN MENU - Please choose an option.");
             Console.WriteLine("====================================");
@@ -35,13 +43,19 @@ namespace ChatMessenger
 
     public class User : Users
     {
+        public User()
+        {
+
+        }
+
         public User(string NewUsernamame, int newId)
         {
-            _Id = newId;
-            _Name = NewUsernamame;
-            _TypeOfUser = UserType.User;
+            id = newId;
+            username = NewUsernamame;
+            deleted = false;
+            type = UserType.User;
             application.Add("x", LoginScreen.LoginMethod);
-            application.Add("a", ApplicationsMenus.ChatMenuMethod);
+            application.Add("a", ApplicationsMenus.ChatMenu);
         }
     }
 
@@ -51,11 +65,11 @@ namespace ChatMessenger
     {
         public ViewAdmin(string NewUsernamame, int newId) : base(NewUsernamame, newId)
         {
-            _TypeOfUser = UserType.ViewAdmin;
-            application.Add("b", MainApplication.ViewAllMessageMethod);
+            type = UserType.ViewAdmin;
+            application.Add("b", MainApplication.ViewAllMessage);
         }
 
-        public override void PublicMenuMethod()
+        public override void PublicMenu()
         {
             Console.WriteLine("MAIN MENU - Please choose an option.");
             Console.WriteLine("====================================");
@@ -71,11 +85,11 @@ namespace ChatMessenger
     {
         public ViewEditAdmin(string NewUsernamame, int newId) : base(NewUsernamame, newId)
         {
-            _TypeOfUser = UserType.ViewEditAdmin;
-            application.Add("c", MainApplication.EditMessageMethod);
+            type = UserType.ViewEditAdmin;
+            application.Add("c", MainApplication.EditMessage);
         }
 
-        public override void PublicMenuMethod()
+        public override void PublicMenu()
         {
             Console.WriteLine("MAIN MENU - Please choose an option.");
             Console.WriteLine("====================================");
@@ -93,11 +107,11 @@ namespace ChatMessenger
 
         public ViewEditDeleteAdmin(string NewUsernamame, int newId) : base(NewUsernamame, newId)
         {
-            _TypeOfUser = UserType.ViewEditDeleteAdmin;
-            application.Add("d", MainApplication.DeleteMessageMethod);
+            type = UserType.ViewEditDeleteAdmin;
+            application.Add("d", MainApplication.DeleteMessage);
         }
 
-        public override void PublicMenuMethod()
+        public override void PublicMenu()
         {
             Console.WriteLine("MAIN MENU - Please choose an option.");
             Console.WriteLine("====================================");
@@ -116,11 +130,11 @@ namespace ChatMessenger
 
         public SuperAdmin(string NewUsernamame, int newId) : base(NewUsernamame, newId)
         {
-            _TypeOfUser = UserType.SuperAdmin;
-            application.Add("e", ApplicationsMenus.UserMenuMethod);
+            type = UserType.SuperAdmin;
+            application.Add("e", ApplicationsMenus.UserMenu);
         }
 
-        public override void PublicMenuMethod()
+        public override void PublicMenu()
         {
             Console.WriteLine("MAIN MENU - Please choose an option.");
             Console.WriteLine("====================================");

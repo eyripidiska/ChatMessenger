@@ -6,7 +6,7 @@ namespace ChatMessenger
 {
     class HelpMethods
     {
-        public static string SamePasswordMethod()
+        public static string SamePassword()
         {
             bool samePassword = false;
             string password1 = "";
@@ -39,7 +39,7 @@ namespace ChatMessenger
         public static bool CheckNoExistUser(string username)
         {
             string cmd = "select * from users";
-            IEnumerable<dynamic> users = DatabasesAccess.ReturnQueryDatabase(cmd);
+            IEnumerable<User> users = DatabasesAccess.ReturnUsersDatabase(cmd);
             bool UserExist = users
                 .Any(x => x.username == username && x.deleted == false);
 
@@ -54,7 +54,7 @@ namespace ChatMessenger
             return UserExist;
         }
 
-        public static bool CheckExistUser(IEnumerable<dynamic> users, string username)
+        public static bool CheckExistUser(IEnumerable<User> users, string username)
         {
             bool UserExist = false;
 
@@ -63,7 +63,7 @@ namespace ChatMessenger
 
             if (UserExist == false)
             {
-                UserDoesNotExistMessageMethod();
+                UserDoesNotExistMessage();
             }
             return UserExist;
         }
@@ -78,7 +78,7 @@ namespace ChatMessenger
 
             if (UserExist == false)
             {
-                UserDoesNotExistMessageMethod();
+                UserDoesNotExistMessage();
             }
             return UserExist;
         }
@@ -88,7 +88,7 @@ namespace ChatMessenger
         public static bool CheckExistUser(string username)
         {
             string cmd = "select * from users";
-            IEnumerable<dynamic> users = DatabasesAccess.ReturnQueryDatabase(cmd);
+            IEnumerable<User> users = DatabasesAccess.ReturnUsersDatabase(cmd);
 
             bool UserExist = users
                 .Any(x => x.username == username && x.deleted == false);
@@ -101,13 +101,13 @@ namespace ChatMessenger
         public static bool CheckExistMessage(int id)
         {
             string cmd = "SELECT * FROM messages";
-            IEnumerable<dynamic> messages = DatabasesAccess.ReturnQueryDatabase(cmd);
+            IEnumerable<User> messages = DatabasesAccess.ReturnUsersDatabase(cmd);
             bool MessageExist = messages
                 .Any(x => x.id == id && x.deleted == false);
             return MessageExist;
         }
 
-        public static void LoginScreenMessageMethod()
+        public static void LoginScreenMessage()
         {
             Console.Clear();
             Console.ForegroundColor = ConsoleColor.Green;
@@ -115,7 +115,7 @@ namespace ChatMessenger
             Console.ForegroundColor = ConsoleColor.White;
             Console.Write("\n");
         }
-        public static void IncorrectMessageMethod()
+        public static void IncorrectMessage()
         {
             Console.Clear();
             Console.ForegroundColor = ConsoleColor.Red;
@@ -127,7 +127,7 @@ namespace ChatMessenger
 
 
 
-        public static void UserDoesNotExistMessageMethod()
+        public static void UserDoesNotExistMessage()
         {
             Console.Clear();
             Console.ForegroundColor = ConsoleColor.Red;
@@ -136,7 +136,7 @@ namespace ChatMessenger
             Console.Write("\n");
         }
 
-        public static void ReturnBackMessageMethod()
+        public static void ReturnBackMessage()
         {
             Console.Write("\n");
             Console.WriteLine("Press any key to return back");
@@ -145,7 +145,7 @@ namespace ChatMessenger
         }
 
 
-        public static void MessageDoesNotExistMethod()
+        public static void MessageDoesNotExist()
         {
             Console.Clear();
             Console.ForegroundColor = ConsoleColor.Red;

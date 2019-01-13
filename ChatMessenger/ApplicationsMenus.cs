@@ -27,22 +27,22 @@ namespace ChatMessenger
         {
             {"a", MainApplication.SendMessage},
             {"b", MainApplication.ViewMessage},
-            {"c", MainApplication.ViewAllMessageByUserMethod}
+            {"c", MainApplication.ViewAllMessageByUser}
 
         };
 
         public static Dictionary<string, EditUser> editUser = new Dictionary<string, EditUser>()
         {
-            {"a", MainApplication.CreateUserMethod},
-            {"b", MainApplication.ViewUserMethod},
-            {"c", MainApplication.DeleteUserMethod},
-            {"d", MainApplication.UpdateUserNameMethod},
-            {"e", MainApplication.UpdatePasswordMethod},
-            {"f", MainApplication.UpdateRoleMethod},
+            {"a", MainApplication.CreateUser},
+            {"b", MainApplication.ViewUser},
+            {"c", MainApplication.DeleteUser},
+            {"d", MainApplication.UpdateUserName},
+            {"e", MainApplication.UpdatePassword},
+            {"f", MainApplication.UpdateRole},
         };
 
 
-        public static void ApplicationMenuMethod(string username, string TypeOfUser, int Id)
+        public static void ApplicationMenu(string username, string TypeOfUser, int Id)
         {
             Users user;
             userId = Id;
@@ -62,7 +62,7 @@ namespace ChatMessenger
             Console.Write("\n");
             while (true)
             {
-                user.PublicMenuMethod();
+                user.PublicMenu();
                 Console.Write("\n");
                 Console.ForegroundColor = ConsoleColor.Green;
                 Console.Write("Enter an option: ");
@@ -75,20 +75,20 @@ namespace ChatMessenger
                 }
                 else
                 {
-                    HelpMethods.IncorrectMessageMethod();
+                    HelpMethods.IncorrectMessage();
                 }
             }
         }
 
 
 
-        public static void ChatMenuMethod()
+        public static void ChatMenu()
         {
             Console.WriteLine("CHAT MENU - Please choose an option.");
             Console.WriteLine("====================================");
             Console.WriteLine("a. Send Message");
-            Console.WriteLine("b. Read Message");
-            Console.WriteLine("c. Read All Message");
+            Console.WriteLine("b. Read Messages");
+            Console.WriteLine("c. Read All Messages");
             Console.Write("\n");
             Console.ForegroundColor = ConsoleColor.Green;
             Console.Write("Enter an option: ");
@@ -102,12 +102,12 @@ namespace ChatMessenger
             }
             else
             {
-                HelpMethods.IncorrectMessageMethod();
+                HelpMethods.IncorrectMessage();
             }
         }
 
 
-        public static void UserMenuMethod()
+        public static void UserMenu()
         {
             Console.WriteLine("USER MENU - Please choose an option.");
             Console.WriteLine("====================================");
@@ -129,13 +129,13 @@ namespace ChatMessenger
             }
             else
             {
-                HelpMethods.IncorrectMessageMethod();
+                HelpMethods.IncorrectMessage();
             }
         }
 
 
 
-        public static string RoleMenuMethod()
+        public static string RoleMenu()
         {
             while (true)
             {
@@ -159,7 +159,7 @@ namespace ChatMessenger
                 }
                 else
                 {
-                    HelpMethods.IncorrectMessageMethod();
+                    HelpMethods.IncorrectMessage();
                 }
             }
         }
