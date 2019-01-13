@@ -14,16 +14,29 @@ CREATE TABLE users(
 
 
 
+--CREATE TABLE [messages](
+--	id INT IDENTITY(1,1) NOT NULL,
+--	dateOfSubmission DATETIME NOT NULL,
+--	senderId INT NOT NULL,
+--	receiverId INT NOT NULL,
+--	messageData VARCHAR(250) NULL,
+--	deleted BIT NOT NULL
+--                PRIMARY KEY (id)
+--);
+
+
 CREATE TABLE [messages](
 	id INT IDENTITY(1,1) NOT NULL,
 	dateOfSubmission DATETIME NOT NULL,
 	senderId INT NOT NULL,
 	receiverId INT NOT NULL,
 	messageData VARCHAR(250) NULL,
-	deleted BIT NOT NULL
+	deleted BIT NOT NULL,
+	readed BIT NOT NULL
                 PRIMARY KEY (id)
+				CONSTRAINT fk1_messages FOREIGN KEY (senderId) REFERENCES users(id),
+                CONSTRAINT fk2_messages FOREIGN KEY (receiverId) REFERENCES users (id)
 );
-
 
 
 --insert users
@@ -122,6 +135,7 @@ GO
 
 EXECUTE Insert_Users @username='admin', @pass='admin', @role='Super Admin';
 
+--check password
 CREATE PROCEDURE check_Password
     @username VARCHAR(32), 
     @pass VARCHAR(32),

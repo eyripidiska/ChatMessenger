@@ -26,7 +26,7 @@ namespace ChatMessenger
             {
                 Console.Clear();
                 DatabasesAccess.InsertMessagesDatabase(userId, receiverId, message);
-                //FindUserNameMethod(userId, receiverId, message);
+                FindUserName(userId, receiverId, message);
             }
             else
             {
@@ -50,15 +50,8 @@ namespace ChatMessenger
             IEnumerable<User> users = DatabasesAccess.ReturnUsersDatabase(cmd);
             cmd = "SELECT * FROM messages WHERE deleted = 0";
             IEnumerable<Message> messages = DatabasesAccess.ReturnMessagesDatabase(cmd);
-
-            Sender = users
-                .Where(x => SenderId == x.id)
-                .Select(x => x.username)
-                .FirstOrDefault();
-            receiver = users
-                .Where(x => receiverId == x.id)
-                .Select(x => x.username)
-                .FirstOrDefault();
+            Sender = HelpMethods.ReturnUsernameFromId(users, SenderId);
+            receiver = HelpMethods.ReturnUsernameFromId(users, receiverId);
 
             FilesAccess.Files(Sender, receiver, message, SenderId, receiverId);
         }

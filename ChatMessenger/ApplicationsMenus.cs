@@ -27,7 +27,8 @@ namespace ChatMessenger
         {
             {"a", MainApplication.SendMessage},
             {"b", MainApplication.ViewMessage},
-            {"c", MainApplication.ViewAllMessageByUser}
+            {"c", MainApplication.ViewNewMessage},
+            {"d", MainApplication.ViewAllMessageByUser}
 
         };
 
@@ -63,7 +64,6 @@ namespace ChatMessenger
             while (true)
             {
                 user.PublicMenu();
-                Console.Write("\n");
                 Console.ForegroundColor = ConsoleColor.Green;
                 Console.Write("Enter an option: ");
                 Console.ForegroundColor = ConsoleColor.White;
@@ -88,7 +88,8 @@ namespace ChatMessenger
             Console.WriteLine("====================================");
             Console.WriteLine("a. Send Message");
             Console.WriteLine("b. Read Messages");
-            Console.WriteLine("c. Read All Messages");
+            Console.WriteLine("c. Read New Messages");
+            Console.WriteLine("d. Read All Messages");
             Console.Write("\n");
             Console.ForegroundColor = ConsoleColor.Green;
             Console.Write("Enter an option: ");

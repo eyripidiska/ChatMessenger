@@ -15,13 +15,14 @@ namespace ChatMessenger
             bool UserExist = HelpMethods.CheckExistUser(users, Username);
             if (UserExist == true)
             {
-                var receiverId = users
-                    .Where(x => x.username == Username)
-                    .Select(x => x.id);
-                int ReceiverId = Convert.ToInt32(receiverId.FirstOrDefault());
+                int ReceiverId = HelpMethods.ReturnIdFromUsername(users, Username);
                 int userId = ApplicationsMenus.userId;
                 Console.Clear();
-                Console.WriteLine($"Write a message to {Username}, the maximun text limited to 250 characters");
+                Console.Write($"Write a message to ");
+                Console.ForegroundColor = ConsoleColor.Green;
+                Console.Write(Username);
+                Console.ForegroundColor = ConsoleColor.White;
+                Console.Write(", the maximun text limited to 250 characters");
                 Console.WriteLine("\n");
                 Message.SendMessage(userId, ReceiverId);
             }
@@ -41,10 +42,7 @@ namespace ChatMessenger
             bool existUser = HelpMethods.CheckExistUser(users, Username);
             if (existUser == true)
             {
-                var receiverId = users
-                    .Where(x => x.username == Username)
-                    .Select(x => x.id);
-                int ReceiverId = Convert.ToInt32(receiverId.FirstOrDefault());
+                int ReceiverId = HelpMethods.ReturnIdFromUsername(users, Username);
                 int userId = ApplicationsMenus.userId;
                 Console.Clear();
                 cmd = "SELECT * FROM messages WHERE deleted = 0;";
@@ -73,11 +71,37 @@ namespace ChatMessenger
         }
 
 
+        public static void ViewNewMessage()
+        {
+            Console.Clear();
+            int SenderId;
+            int userId = ApplicationsMenus.userId;
+            string cmd = "select id, username from users";
+            IEnumerable<User> users = DatabasesAccess.ReturnUsersDatabase(cmd);
+            cmd = "SELECT * FROM messages WHERE deleted = 0 AND readed = 0;";
+            IEnumerable<Message> messages = DatabasesAccess.ReturnMessagesDatabase(cmd);
+            var myMessage = messages.Where(m => m.receiverId == userId).ToList();
+            foreach (var m in myMessage)
+            {
+                SenderId = m.senderId;
+                string Sender = HelpMethods.ReturnUsernameFromId(users, SenderId);
+
+                Console.Write("From: ");
+                Console.ForegroundColor = ConsoleColor.Green;
+                Console.Write(Sender);
+                Console.ForegroundColor = ConsoleColor.White;
+                Console.Write(" - Message: " + m.messageData);
+                DatabasesAccess.ProcessMessagesDatabase(m.id, "Read_messages");
+            }
+            HelpMethods.ReturnBackMessage();
+        }
+        
+
+
         public static void ViewAllMessageByUser()
         {
             Console.Clear();
             int SenderId;
-            string Sender;
             int userId = ApplicationsMenus.userId;
             string cmd = "select id, username from users";
             IEnumerable<User> users = DatabasesAccess.ReturnUsersDatabase(cmd);
@@ -88,18 +112,14 @@ namespace ChatMessenger
             {
 
                 SenderId = m.senderId;
-
-                Sender = users
-                    .Where(x => SenderId == x.id)
-                    .Select(x => x.username)
-                    .FirstOrDefault();
+                string Sender = HelpMethods.ReturnUsernameFromId(users, SenderId);
 
                 Console.Write("From: ");
                 Console.ForegroundColor = ConsoleColor.Green;
                 Console.Write(Sender);
                 Console.ForegroundColor = ConsoleColor.White;
-                Console.WriteLine(" - Message: " + m.messageData);
-
+                Console.Write(" - Message: " + m.messageData);
+                DatabasesAccess.ProcessMessagesDatabase(m.id, "Read_messages");
             }
             HelpMethods.ReturnBackMessage();
         }
@@ -120,16 +140,8 @@ namespace ChatMessenger
             {
                 SenderId = m.senderId;
                 receiverId = m.receiverId;
-
-                Sender = users
-                    .Where(x => SenderId == x.id)
-                    .Select(x => x.username)
-                    .FirstOrDefault();
-
-                receiver = users
-                    .Where(x => receiverId == x.id)
-                    .Select(x => x.username)
-                    .FirstOrDefault();
+                Sender = HelpMethods.ReturnUsernameFromId(users, SenderId);
+                receiver = HelpMethods.ReturnUsernameFromId(users, receiverId);
 
                 Console.Write("Id: " + m.id + " - From: ");
                 Console.ForegroundColor = ConsoleColor.Green;
@@ -169,7 +181,7 @@ namespace ChatMessenger
                         .Where(x => x.id == id)
                         .Select(x => x.receiverId);
                     int ReceiverId = Convert.ToInt32(receiverId.FirstOrDefault());
-                    DatabasesAccess.DeleteMessagesDatabase(id);
+                    DatabasesAccess.ProcessMessagesDatabase(id, "Delete_messages");
                     Console.Clear();
                     Console.WriteLine($"Write the new message the maximun text limited to 250 characters");
                     Console.WriteLine("\n");
@@ -199,7 +211,7 @@ namespace ChatMessenger
                 if (MessageExist == true)
                 {
                     Console.Clear();
-                    DatabasesAccess.DeleteMessagesDatabase(id);
+                    DatabasesAccess.ProcessMessagesDatabase(id, "Delete_messages");
                 }
                 else
                 {
@@ -212,6 +224,10 @@ namespace ChatMessenger
             }
 
         }
+
+
+
+
 
 
         public static void CreateUser()

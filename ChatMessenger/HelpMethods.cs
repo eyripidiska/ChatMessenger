@@ -35,6 +35,27 @@ namespace ChatMessenger
         }
 
 
+        public static int ReturnIdFromUsername(IEnumerable<User> users, string username)
+        {
+            var Id = users
+                    .Where(x => x.username == username)
+                    .Select(x => x.id);
+            int id = Convert.ToInt32(Id.FirstOrDefault());
+            return id;
+        }
+
+
+
+        public static string ReturnUsernameFromId(IEnumerable<User> users, int id)
+        {
+            var username = users
+                    .Where(x => id == x.id)
+                    .Select(x => x.username)
+                    .FirstOrDefault();
+            return username;
+        }
+
+
 
         public static bool CheckNoExistUser(string username)
         {
@@ -152,6 +173,17 @@ namespace ChatMessenger
             Console.WriteLine("The message does not exist");
             Console.ForegroundColor = ConsoleColor.White;
             Console.Write("\n");
+        }
+
+        public static void MessageErrorConnection()
+        {
+            Console.ForegroundColor = ConsoleColor.Red;
+            Console.WriteLine("The connection with the database was unsuccessful");
+            Console.ForegroundColor = ConsoleColor.White;
+            Console.Write("\n");
+            Console.ReadKey();
+            Console.Clear();
+            LoginScreen.LoginMethod();
         }
     }
 }
