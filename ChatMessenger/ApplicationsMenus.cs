@@ -64,6 +64,7 @@ namespace ChatMessenger
             while (true)
             {
                 user.PublicMenu();
+                Console.Write("\n");
                 Console.ForegroundColor = ConsoleColor.Green;
                 Console.Write("Enter an option: ");
                 Console.ForegroundColor = ConsoleColor.White;

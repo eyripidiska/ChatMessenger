@@ -120,6 +120,7 @@ namespace ChatMessenger
                 Console.ForegroundColor = ConsoleColor.White;
                 Console.Write(" - Message: " + m.messageData);
                 DatabasesAccess.ProcessMessagesDatabase(m.id, "Read_messages");
+                Console.Write("\n");
             }
             HelpMethods.ReturnBackMessage();
         }
