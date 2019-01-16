@@ -19,13 +19,16 @@ namespace ChatMessenger
         public bool deleted { get; set; }
 
 
-        public static void SendMessage(int userId, int receiverId)
+        DatabasesAccess da = new DatabasesAccess();
+        HelpMethods hm = new HelpMethods();
+
+        public void SendMessage(int userId, int receiverId)
         {
             string message = Console.ReadLine();
             if (message.Length <= 250)
             {
                 Console.Clear();
-                DatabasesAccess.InsertMessagesDatabase(userId, receiverId, message);
+                da.InsertMessagesDatabase(userId, receiverId, message);
                 FindUserName(userId, receiverId, message);
             }
             else
@@ -42,16 +45,16 @@ namespace ChatMessenger
 
 
 
-        public static void FindUserName(int SenderId, int receiverId, string message)
+        public void FindUserName(int SenderId, int receiverId, string message)
         {
             string Sender;
             string receiver;
             string cmd = "select * from users where deleted = 0";
-            IEnumerable<User> users = DatabasesAccess.ReturnUsersDatabase(cmd);
+            IEnumerable<User> users = da.ReturnUsersDatabase(cmd);
             cmd = "SELECT * FROM messages WHERE deleted = 0";
-            IEnumerable<Message> messages = DatabasesAccess.ReturnMessagesDatabase(cmd);
-            Sender = HelpMethods.ReturnUsernameFromId(users, SenderId);
-            receiver = HelpMethods.ReturnUsernameFromId(users, receiverId);
+            IEnumerable<Message> messages = da.ReturnMessagesDatabase(cmd);
+            Sender = hm.ReturnUsernameFromId(users, SenderId);
+            receiver = hm.ReturnUsernameFromId(users, receiverId);
 
             FilesAccess.Files(Sender, receiver, message, SenderId, receiverId);
         }

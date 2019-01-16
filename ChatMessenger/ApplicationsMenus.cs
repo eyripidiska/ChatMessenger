@@ -14,8 +14,8 @@ namespace ChatMessenger
 
         MainApplication ma = new MainApplication();
         HelpMethods hm = new HelpMethods();
-
-        private static Dictionary<string, string> roles = new Dictionary<string, string>()
+        
+        private Dictionary<string, string> roles = new Dictionary<string, string>()
         {
             {"a", "User"},
             {"b", "View Admin"},
@@ -26,28 +26,11 @@ namespace ChatMessenger
 
 
 
-        private static Dictionary<string, menu> menuMessages = new Dictionary<string, menu>()
-        {
-            {"a", maSendMessage},
-            {"b", ma.ViewMessage},
-            {"c", ma.ViewNewMessage},
-            {"d", ma.ViewAllMessageByUser}
-
-        };
-
-        public Dictionary<string, EditUser> editUser = new Dictionary<string, EditUser>()
-        {
-            {"a", ma.CreateUser},
-            {"b", ma.ViewUser},
-            {"c", ma.DeleteUser},
-            {"d", ma.UpdateUserName},
-            {"e", ma.UpdatePassword},
-            {"f", ma.UpdateRole},
-        };
-
-
         public void ApplicationMenu(string username, string TypeOfUser, int Id)
         {
+            
+
+
             Users user;
             userId = Id;
             Dictionary<string, Users> TypeOfUsers = new Dictionary<string, Users>()
@@ -88,6 +71,16 @@ namespace ChatMessenger
 
         public void ChatMenu()
         {
+            Dictionary<string, menu> menuMessages = new Dictionary<string, menu>()
+            {
+                {"a", ma.SendMessage},
+                {"b", ma.ViewMessage},
+                {"c", ma.ViewNewMessage},
+                {"d", ma.ViewAllMessageByUser}
+
+            };
+
+
             Console.WriteLine("CHAT MENU - Please choose an option.");
             Console.WriteLine("====================================");
             Console.WriteLine("a. Send Message");
@@ -114,6 +107,16 @@ namespace ChatMessenger
 
         public void UserMenu()
         {
+            Dictionary<string, EditUser> editUser = new Dictionary<string, EditUser>()
+            {
+                {"a", ma.CreateUser},
+                {"b", ma.ViewUser},
+                {"c", ma.DeleteUser},
+                {"d", ma.UpdateUserName},
+                {"e", ma.UpdatePassword},
+                {"f", ma.UpdateRole},
+            };
+
             Console.WriteLine("USER MENU - Please choose an option.");
             Console.WriteLine("====================================");
             Console.WriteLine("a. Create new User");

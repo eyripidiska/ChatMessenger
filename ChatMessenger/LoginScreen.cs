@@ -9,7 +9,7 @@ namespace ChatMessenger
     {
         HelpMethods hm = new HelpMethods();
         DatabasesAccess da = new DatabasesAccess();
-        
+        ApplicationsMenus am = new ApplicationsMenus();
 
         public void LoginMethod()
         {
@@ -31,7 +31,7 @@ namespace ChatMessenger
                         foundPassword = PasswordMethod(username);
                         Console.Write("\n");
                         Console.Clear();
-                        ApplicationsMenus.ApplicationMenu(username, TypeOfUser, Id);
+                        am.ApplicationMenu(username, TypeOfUser, Id);
                     }
                 }
                 if (foundPassword == false)

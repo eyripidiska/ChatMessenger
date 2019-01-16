@@ -15,6 +15,7 @@ namespace ChatMessenger
     public delegate void Application();
 
 
+
     public abstract class Users
     {
         public int id { get; set; }
@@ -48,7 +49,7 @@ namespace ChatMessenger
         {
 
         }
-
+        ApplicationsMenus am = new ApplicationsMenus();
         public User(string NewUsernamame, int newId)
         {
             LoginScreen ls = new LoginScreen();
@@ -57,7 +58,7 @@ namespace ChatMessenger
             deleted = false;
             type = UserType.User;
             application.Add("x", ls.LoginMethod);
-            application.Add("a", ApplicationsMenus.ChatMenu);
+            application.Add("a", am.ChatMenu);
         }
     }
 
@@ -67,8 +68,9 @@ namespace ChatMessenger
     {
         public ViewAdmin(string NewUsernamame, int newId) : base(NewUsernamame, newId)
         {
+            MainApplication ma = new MainApplication();
             type = UserType.ViewAdmin;
-            application.Add("b", MainApplication.ViewAllMessage);
+            application.Add("b", ma.ViewAllMessage);
         }
 
         public override void PublicMenu()
@@ -87,8 +89,9 @@ namespace ChatMessenger
     {
         public ViewEditAdmin(string NewUsernamame, int newId) : base(NewUsernamame, newId)
         {
+            MainApplication ma = new MainApplication();
             type = UserType.ViewEditAdmin;
-            application.Add("c", MainApplication.EditMessage);
+            application.Add("c", ma.EditMessage);
         }
 
         public override void PublicMenu()
@@ -109,8 +112,9 @@ namespace ChatMessenger
 
         public ViewEditDeleteAdmin(string NewUsernamame, int newId) : base(NewUsernamame, newId)
         {
+            MainApplication ma = new MainApplication();
             type = UserType.ViewEditDeleteAdmin;
-            application.Add("d", MainApplication.DeleteMessage);
+            application.Add("d", ma.DeleteMessage);
         }
 
         public override void PublicMenu()
@@ -132,8 +136,9 @@ namespace ChatMessenger
 
         public SuperAdmin(string NewUsernamame, int newId) : base(NewUsernamame, newId)
         {
+            ApplicationsMenus am = new ApplicationsMenus();
             type = UserType.SuperAdmin;
-            application.Add("e", ApplicationsMenus.UserMenu);
+            application.Add("e", am.UserMenu);
         }
 
         public override void PublicMenu()

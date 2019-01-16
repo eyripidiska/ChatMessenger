@@ -9,7 +9,8 @@ namespace ChatMessenger
 
         DatabasesAccess da = new DatabasesAccess();
         HelpMethods hm = new HelpMethods();
-        apl
+        ApplicationsMenus am = new ApplicationsMenus();
+        Message me = new Message();
 
         public void SendMessage()
         {
@@ -29,7 +30,7 @@ namespace ChatMessenger
                 Console.ForegroundColor = ConsoleColor.White;
                 Console.Write(", the maximun text limited to 250 characters");
                 Console.WriteLine("\n");
-                Message.SendMessage(userId, ReceiverId);
+                me.SendMessage(userId, ReceiverId);
             }
             else
             {
@@ -191,7 +192,7 @@ namespace ChatMessenger
                     Console.Clear();
                     Console.WriteLine($"Write the new message the maximun text limited to 250 characters");
                     Console.WriteLine("\n");
-                    Message.SendMessage(SenderId, ReceiverId);
+                    me.SendMessage(SenderId, ReceiverId);
                 }
                 else
                 {
@@ -246,7 +247,7 @@ namespace ChatMessenger
             {
                 string password = hm.SamePassword();
                 Console.Clear();
-                string role = ApplicationsMenus.RoleMenu();
+                string role = am.RoleMenu();
                 DBDictionary.Add("@username", username);
                 DBDictionary.Add("@pass", password);
                 DBDictionary.Add("@role", role);
@@ -350,7 +351,7 @@ namespace ChatMessenger
             if (UserExist == true)
             {
                 Console.Clear();
-                string role = ApplicationsMenus.RoleMenu();
+                string role = am.RoleMenu();
                 DBDictionary.Add("username", username);
                 DBDictionary.Add("newRole", role);
                 da.ProcedureDatabase(DBDictionary, "Update_Users_By_Role");
