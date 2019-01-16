@@ -4,7 +4,8 @@ namespace ChatMessenger
     {
         static void Main(string[] args)
         {
-            LoginScreen.LoginMethod();
+            LoginScreen ls = new LoginScreen();
+            ls.LoginMethod();
         }
     }
 }

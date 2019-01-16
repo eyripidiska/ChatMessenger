@@ -14,6 +14,7 @@ namespace ChatMessenger
 
     public delegate void Application();
 
+
     public abstract class Users
     {
         public int id { get; set; }
@@ -26,7 +27,7 @@ namespace ChatMessenger
 
         public bool deleted { get; set; }
 
-
+        
 
         public Dictionary<string, Application> application = new Dictionary<string, Application>();
 
@@ -50,11 +51,12 @@ namespace ChatMessenger
 
         public User(string NewUsernamame, int newId)
         {
+            LoginScreen ls = new LoginScreen();
             id = newId;
             username = NewUsernamame;
             deleted = false;
             type = UserType.User;
-            application.Add("x", LoginScreen.LoginMethod);
+            application.Add("x", ls.LoginMethod);
             application.Add("a", ApplicationsMenus.ChatMenu);
         }
     }

@@ -4,13 +4,16 @@ using System.Collections.Generic;
 namespace ChatMessenger
 {
 
-    class ApplicationsMenus
+    public class ApplicationsMenus
     {
         public static int userId { get; set; }
 
         public delegate void menu();
 
         public delegate void EditUser();
+
+        MainApplication ma = new MainApplication();
+        HelpMethods hm = new HelpMethods();
 
         private static Dictionary<string, string> roles = new Dictionary<string, string>()
         {
@@ -25,25 +28,25 @@ namespace ChatMessenger
 
         private static Dictionary<string, menu> menuMessages = new Dictionary<string, menu>()
         {
-            {"a", MainApplication.SendMessage},
-            {"b", MainApplication.ViewMessage},
-            {"c", MainApplication.ViewNewMessage},
-            {"d", MainApplication.ViewAllMessageByUser}
+            {"a", maSendMessage},
+            {"b", ma.ViewMessage},
+            {"c", ma.ViewNewMessage},
+            {"d", ma.ViewAllMessageByUser}
 
         };
 
-        public static Dictionary<string, EditUser> editUser = new Dictionary<string, EditUser>()
+        public Dictionary<string, EditUser> editUser = new Dictionary<string, EditUser>()
         {
-            {"a", MainApplication.CreateUser},
-            {"b", MainApplication.ViewUser},
-            {"c", MainApplication.DeleteUser},
-            {"d", MainApplication.UpdateUserName},
-            {"e", MainApplication.UpdatePassword},
-            {"f", MainApplication.UpdateRole},
+            {"a", ma.CreateUser},
+            {"b", ma.ViewUser},
+            {"c", ma.DeleteUser},
+            {"d", ma.UpdateUserName},
+            {"e", ma.UpdatePassword},
+            {"f", ma.UpdateRole},
         };
 
 
-        public static void ApplicationMenu(string username, string TypeOfUser, int Id)
+        public void ApplicationMenu(string username, string TypeOfUser, int Id)
         {
             Users user;
             userId = Id;
@@ -76,14 +79,14 @@ namespace ChatMessenger
                 }
                 else
                 {
-                    HelpMethods.IncorrectMessage();
+                    hm.IncorrectMessage();
                 }
             }
         }
 
 
 
-        public static void ChatMenu()
+        public void ChatMenu()
         {
             Console.WriteLine("CHAT MENU - Please choose an option.");
             Console.WriteLine("====================================");
@@ -104,12 +107,12 @@ namespace ChatMessenger
             }
             else
             {
-                HelpMethods.IncorrectMessage();
+                hm.IncorrectMessage();
             }
         }
 
 
-        public static void UserMenu()
+        public void UserMenu()
         {
             Console.WriteLine("USER MENU - Please choose an option.");
             Console.WriteLine("====================================");
@@ -131,13 +134,13 @@ namespace ChatMessenger
             }
             else
             {
-                HelpMethods.IncorrectMessage();
+                hm.IncorrectMessage();
             }
         }
 
 
 
-        public static string RoleMenu()
+        public string RoleMenu()
         {
             while (true)
             {
@@ -161,7 +164,7 @@ namespace ChatMessenger
                 }
                 else
                 {
-                    HelpMethods.IncorrectMessage();
+                    hm.IncorrectMessage();
                 }
             }
         }
