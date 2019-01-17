@@ -1,6 +1,5 @@
 
 CREATE DATABASE ChatDB;
-GO
 
 USE ChatDB;
 
@@ -147,7 +146,13 @@ BEGIN
 	WHERE username = @username AND pass = CONVERT(VARCHAR(MAX),HASHBYTES('MD5', CAST(salt AS VARCHAR(MAX)) + @pass) ,2)
 END
 
-
+									     
+									     
+									     
+									     
+DECLARE @user VARCHAR(100) 
+EXECUTE check_Password  @username = 'admin', @pass = 'dmin' , @user = @user OUTPUT
+SELECT @user 
 
 									     
 									     
