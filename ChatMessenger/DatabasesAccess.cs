@@ -1,8 +1,7 @@
-﻿using System;
-using Dapper;
+﻿using Dapper;
 using System.Collections.Generic;
-using System.Data.SqlClient;
 using System.Data;
+using System.Data.SqlClient;
 using System.Linq;
 
 namespace ChatMessenger
@@ -10,11 +9,11 @@ namespace ChatMessenger
     class DatabasesAccess
     {
 
-        HelpMethods hm = new HelpMethods();
-        public IEnumerable<User> ReturnUsersDatabase(string cmd)
+        string connectionString = Properties.Settings.Default.connectionString;
+
+        public IEnumerable<User> UsersDatabase(string cmd)
         {
             IEnumerable<User> users;
-            var connectionString = Properties.Settings.Default.connectionString;
             SqlConnection dbcon = new SqlConnection(connectionString);
             try
             {
@@ -26,16 +25,15 @@ namespace ChatMessenger
             }
             catch (SqlException)
             {
-                hm.MessageErrorConnection();
+                HelpMethods.MessageErrorConnection();
                 users = null;
             }
             return users;
         }
 
-        public IEnumerable<Message> ReturnMessagesDatabase(string cmd)
+        public IEnumerable<Message> MessagesDatabase(string cmd)
         {
             IEnumerable<Message> messages;
-            var connectionString = Properties.Settings.Default.connectionString;
             SqlConnection dbcon = new SqlConnection(connectionString);
             try
             {
@@ -47,7 +45,7 @@ namespace ChatMessenger
             }
             catch (SqlException)
             {
-                hm.MessageErrorConnection();
+                HelpMethods.MessageErrorConnection();
                 messages = null;
             }
             return messages;
@@ -57,7 +55,6 @@ namespace ChatMessenger
 
         public void ProcedureDatabase(Dictionary<string, string> DBDictionary, string nameProcedure)
         {
-            var connectionString = Properties.Settings.Default.connectionString;
             SqlConnection dbcon = new SqlConnection(connectionString);
             try
             {
@@ -75,14 +72,13 @@ namespace ChatMessenger
             }
             catch (SqlException)
             {
-                hm.MessageErrorConnection();
+                HelpMethods.MessageErrorConnection();
             }
         }
 
         public string ProcedureDatabases(string username, string password, string nameProcedure)
         {
             string user;
-            var connectionString = Properties.Settings.Default.connectionString;
             SqlConnection dbcon = new SqlConnection(connectionString);
             try
             {
@@ -100,7 +96,7 @@ namespace ChatMessenger
             }
             catch (SqlException)
             {
-                hm.MessageErrorConnection();
+                HelpMethods.MessageErrorConnection();
                 user = "";
             }
             return user;
@@ -109,7 +105,6 @@ namespace ChatMessenger
 
         public void InsertMessagesDatabase(int userId, int receiverId, string message)
         {
-            var connectionString = Properties.Settings.Default.connectionString;
             SqlConnection dbcon = new SqlConnection(connectionString);
             try
             {
@@ -126,7 +121,7 @@ namespace ChatMessenger
             }
             catch (SqlException)
             {
-                hm.MessageErrorConnection();
+                HelpMethods.MessageErrorConnection();
             }
         }
 
@@ -134,7 +129,6 @@ namespace ChatMessenger
 
         public void ProcessMessagesDatabase(int Id, string nameProcedure)
         {
-            var connectionString = Properties.Settings.Default.connectionString;
             SqlConnection dbcon = new SqlConnection(connectionString);
             try
             {
@@ -149,7 +143,7 @@ namespace ChatMessenger
             }
             catch (SqlException)
             {
-                hm.MessageErrorConnection();
+                HelpMethods.MessageErrorConnection();
             }
         }
     }

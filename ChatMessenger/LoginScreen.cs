@@ -1,42 +1,33 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Security.Cryptography;
-using System.Text;
+using System.Linq;
 
 namespace ChatMessenger
 {
-    public class LoginScreen
+    class LoginScreen
     {
-        HelpMethods hm = new HelpMethods();
-        DatabasesAccess da = new DatabasesAccess();
-        ApplicationsMenus am = new ApplicationsMenus();
-
-        public void LoginMethod()
+        public static void Login()
         {
             bool foundPassword = false;
             string cmd = "select id, username, role, deleted from users";
-            hm.LoginScreenMessage();
+            DatabasesAccess da = new DatabasesAccess();
+            HelpMethods.LoginScreenMessage();
             Console.Write("Username: ");
             string username = Console.ReadLine();
-            IEnumerable<User> users = da.ReturnUsersDatabase(cmd);
+            IEnumerable<User> users = da.UsersDatabase(cmd);
             while (foundPassword == false)
             {
-                foreach (var u in users)
+                var myUser = users.FirstOrDefault(u => u.username == username && !u.deleted);
+                if (myUser != null && Password(username))
                 {
-                    if (username == u.username && u.deleted == false)
-                    {
-                        string TypeOfUser = u.role;
-                        int Id = u.id;
-                        hm.LoginScreenMessage();
-                        foundPassword = PasswordMethod(username);
-                        Console.Write("\n");
-                        Console.Clear();
-                        am.ApplicationMenu(username, TypeOfUser, Id);
-                    }
+                    HelpMethods.LoginScreenMessage();
+                    Console.Write("\n");
+                    Console.Clear();
+                    ApplicationsMenus.ApplicationMenu(myUser);
                 }
-                if (foundPassword == false)
+                else
                 {
-                    hm.LoginScreenMessage();
+                    HelpMethods.LoginScreenMessage();
                     Console.ForegroundColor = ConsoleColor.Red;
                     Console.WriteLine("Incorrect username");
                     Console.ForegroundColor = ConsoleColor.White;
@@ -49,17 +40,18 @@ namespace ChatMessenger
 
 
 
-        public bool PasswordMethod(String username)
+        public static bool Password(String username)
         {
             bool foundPassword = false;
+            DatabasesAccess da = new DatabasesAccess();
             while (foundPassword == false)
             {
-                string password = MaskMethod();
+                string password = Mask();
                 Console.WriteLine("\n");
                 string correct = da.ProcedureDatabases(username, password, "check_Password");
                 if (correct != username)
                 {
-                    hm.LoginScreenMessage();
+                    HelpMethods.LoginScreenMessage();
                     Console.ForegroundColor = ConsoleColor.Red;
                     Console.WriteLine("Incorrect password try again");
                     Console.ForegroundColor = ConsoleColor.White;
@@ -76,7 +68,7 @@ namespace ChatMessenger
 
 
 
-        public string MaskMethod()
+        public static string Mask()
         {
             string password = "";
             Console.Write("Password: ");

@@ -14,8 +14,6 @@ namespace ChatMessenger
 
     public delegate void Application();
 
-
-
     public abstract class Users
     {
         public int id { get; set; }
@@ -28,7 +26,7 @@ namespace ChatMessenger
 
         public bool deleted { get; set; }
 
-        
+
 
         public Dictionary<string, Application> application = new Dictionary<string, Application>();
 
@@ -49,16 +47,15 @@ namespace ChatMessenger
         {
 
         }
-        ApplicationsMenus am = new ApplicationsMenus();
+
         public User(string NewUsernamame, int newId)
         {
-            LoginScreen ls = new LoginScreen();
             id = newId;
             username = NewUsernamame;
             deleted = false;
             type = UserType.User;
-            application.Add("x", ls.LoginMethod);
-            application.Add("a", am.ChatMenu);
+            application.Add("x", LoginScreen.Login);
+            application.Add("a", ApplicationsMenus.ChatMenu);
         }
     }
 
@@ -68,9 +65,8 @@ namespace ChatMessenger
     {
         public ViewAdmin(string NewUsernamame, int newId) : base(NewUsernamame, newId)
         {
-            MainApplication ma = new MainApplication();
             type = UserType.ViewAdmin;
-            application.Add("b", ma.ViewAllMessage);
+            application.Add("b", MainApplication.ViewAllMessage);
         }
 
         public override void PublicMenu()
@@ -89,9 +85,8 @@ namespace ChatMessenger
     {
         public ViewEditAdmin(string NewUsernamame, int newId) : base(NewUsernamame, newId)
         {
-            MainApplication ma = new MainApplication();
             type = UserType.ViewEditAdmin;
-            application.Add("c", ma.EditMessage);
+            application.Add("c", MainApplication.EditMessage);
         }
 
         public override void PublicMenu()
@@ -112,9 +107,8 @@ namespace ChatMessenger
 
         public ViewEditDeleteAdmin(string NewUsernamame, int newId) : base(NewUsernamame, newId)
         {
-            MainApplication ma = new MainApplication();
             type = UserType.ViewEditDeleteAdmin;
-            application.Add("d", ma.DeleteMessage);
+            application.Add("d", MainApplication.DeleteMessage);
         }
 
         public override void PublicMenu()
@@ -136,9 +130,8 @@ namespace ChatMessenger
 
         public SuperAdmin(string NewUsernamame, int newId) : base(NewUsernamame, newId)
         {
-            ApplicationsMenus am = new ApplicationsMenus();
             type = UserType.SuperAdmin;
-            application.Add("e", am.UserMenu);
+            application.Add("e", ApplicationsMenus.UserMenu);
         }
 
         public override void PublicMenu()

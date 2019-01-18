@@ -4,7 +4,7 @@ using System.Collections.Generic;
 namespace ChatMessenger
 {
 
-    public class ApplicationsMenus
+    class ApplicationsMenus
     {
         public static int userId { get; set; }
 
@@ -12,10 +12,7 @@ namespace ChatMessenger
 
         public delegate void EditUser();
 
-        MainApplication ma = new MainApplication();
-        HelpMethods hm = new HelpMethods();
-        
-        private Dictionary<string, string> roles = new Dictionary<string, string>()
+        private static Dictionary<string, string> roles = new Dictionary<string, string>()
         {
             {"a", "User"},
             {"b", "View Admin"},
@@ -26,25 +23,42 @@ namespace ChatMessenger
 
 
 
-        public void ApplicationMenu(string username, string TypeOfUser, int Id)
+        private static Dictionary<string, menu> menuMessages = new Dictionary<string, menu>()
         {
-            
+            {"a", MainApplication.SendMessage},
+            {"b", MainApplication.ViewMessage},
+            {"c", MainApplication.ViewNewMessage},
+            {"d", MainApplication.ViewAllMessageByUser}
+
+        };
+
+        public static Dictionary<string, EditUser> editUser = new Dictionary<string, EditUser>()
+        {
+            {"a", MainApplication.CreateUser},
+            {"b", MainApplication.ViewUser},
+            {"c", MainApplication.DeleteUser},
+            {"d", MainApplication.UpdateUserName},
+            {"e", MainApplication.UpdatePassword},
+            {"f", MainApplication.UpdateRole},
+        };
 
 
+        public static void ApplicationMenu(User myUser)
+        {
             Users user;
-            userId = Id;
             Dictionary<string, Users> TypeOfUsers = new Dictionary<string, Users>()
             {
-                {"User", new User(username, Id)},
-                {"View Admin", new ViewAdmin(username, Id)},
-                {"View-Edit Admin", new ViewEditAdmin(username, Id)},
-                {"View-Edit-Delete Admin", new ViewEditDeleteAdmin(username, Id)},
-                {"Super Admin", new SuperAdmin(username, Id)}
+                {"User", new User(myUser.username, myUser.id)},
+                {"View Admin", new ViewAdmin(myUser.username, myUser.id)},
+                {"View-Edit Admin", new ViewEditAdmin(myUser.username, myUser.id)},
+                {"View-Edit-Delete Admin", new ViewEditDeleteAdmin(myUser.username, myUser.id)},
+                {"Super Admin", new SuperAdmin(myUser.username, myUser.id)}
             };
-            user = TypeOfUsers[TypeOfUser];
+            user = TypeOfUsers[myUser.role];
+            userId = user.id;
             Console.Clear();
             Console.ForegroundColor = ConsoleColor.Green;
-            Console.WriteLine($"Welcome {username}");
+            Console.WriteLine($"Welcome {myUser.username}");
             Console.ForegroundColor = ConsoleColor.White;
             Console.Write("\n");
             while (true)
@@ -62,25 +76,15 @@ namespace ChatMessenger
                 }
                 else
                 {
-                    hm.IncorrectMessage();
+                    HelpMethods.IncorrectMessage();
                 }
             }
         }
 
 
 
-        public void ChatMenu()
+        public static void ChatMenu()
         {
-            Dictionary<string, menu> menuMessages = new Dictionary<string, menu>()
-            {
-                {"a", ma.SendMessage},
-                {"b", ma.ViewMessage},
-                {"c", ma.ViewNewMessage},
-                {"d", ma.ViewAllMessageByUser}
-
-            };
-
-
             Console.WriteLine("CHAT MENU - Please choose an option.");
             Console.WriteLine("====================================");
             Console.WriteLine("a. Send Message");
@@ -100,23 +104,13 @@ namespace ChatMessenger
             }
             else
             {
-                hm.IncorrectMessage();
+                HelpMethods.IncorrectMessage();
             }
         }
 
 
-        public void UserMenu()
+        public static void UserMenu()
         {
-            Dictionary<string, EditUser> editUser = new Dictionary<string, EditUser>()
-            {
-                {"a", ma.CreateUser},
-                {"b", ma.ViewUser},
-                {"c", ma.DeleteUser},
-                {"d", ma.UpdateUserName},
-                {"e", ma.UpdatePassword},
-                {"f", ma.UpdateRole},
-            };
-
             Console.WriteLine("USER MENU - Please choose an option.");
             Console.WriteLine("====================================");
             Console.WriteLine("a. Create new User");
@@ -137,13 +131,13 @@ namespace ChatMessenger
             }
             else
             {
-                hm.IncorrectMessage();
+                HelpMethods.IncorrectMessage();
             }
         }
 
 
 
-        public string RoleMenu()
+        public static string RoleMenu()
         {
             while (true)
             {
@@ -167,7 +161,7 @@ namespace ChatMessenger
                 }
                 else
                 {
-                    hm.IncorrectMessage();
+                    HelpMethods.IncorrectMessage();
                 }
             }
         }

@@ -6,9 +6,46 @@ namespace ChatMessenger
 {
     class HelpMethods
     {
-        DatabasesAccess da = new DatabasesAccess();
-        LoginScreen ls = new LoginScreen();
-        public string SamePassword()
+        public static void SendMessage(int userId, int receiverId)
+        {
+            string message = Console.ReadLine();
+            DatabasesAccess da = new DatabasesAccess();
+            if (message.Length <= 250)
+            {
+                Console.Clear();
+                da.InsertMessagesDatabase(userId, receiverId, message);
+                FindUserName(userId, receiverId, message);
+            }
+            else
+            {
+                Console.Clear();
+                Console.ForegroundColor = ConsoleColor.Red;
+                Console.WriteLine("the message is over to 250 characters");
+                Console.ForegroundColor = ConsoleColor.White;
+                Console.WriteLine("\n");
+            }
+        }
+
+
+
+
+
+        public static void FindUserName(int SenderId, int receiverId, string message)
+        {
+            string Sender;
+            string receiver;
+            string cmd = "select * from users where deleted = 0";
+            DatabasesAccess da = new DatabasesAccess();
+            IEnumerable<User> users = da.UsersDatabase(cmd);
+            cmd = "SELECT * FROM messages WHERE deleted = 0";
+            IEnumerable<Message> messages = da.MessagesDatabase(cmd);
+            Sender = ReturnUsernameFromId(users, SenderId);
+            receiver = ReturnUsernameFromId(users, receiverId);
+            FilesAccess.Files(Sender, receiver, message, SenderId, receiverId);
+        }
+
+
+        public static string SamePassword()
         {
             bool samePassword = false;
             string password1 = "";
@@ -16,10 +53,10 @@ namespace ChatMessenger
             while (samePassword == false)
             {
                 Console.Write("Type the ");
-                password1 = ls.MaskMethod();
+                password1 = LoginScreen.Mask();
                 Console.Write("\n");
                 Console.Write("Repeat the ");
-                password2 = ls.MaskMethod();
+                password2 = LoginScreen.Mask();
                 if (password1 == password2)
                 {
                     samePassword = true;
@@ -37,7 +74,7 @@ namespace ChatMessenger
         }
 
 
-        public int ReturnIdFromUsername(IEnumerable<User> users, string username)
+        public static int ReturnIdFromUsername(IEnumerable<User> users, string username)
         {
             var Id = users
                     .Where(x => x.username == username)
@@ -48,7 +85,7 @@ namespace ChatMessenger
 
 
 
-        public string ReturnUsernameFromId(IEnumerable<User> users, int id)
+        public static string ReturnUsernameFromId(IEnumerable<User> users, int id)
         {
             var username = users
                     .Where(x => id == x.id)
@@ -59,10 +96,11 @@ namespace ChatMessenger
 
 
 
-        public bool CheckNoExistUser(string username)
+        public static bool CheckNoExistUser(string username)
         {
             string cmd = "select * from users";
-            IEnumerable<User> users = da.ReturnUsersDatabase(cmd);
+            DatabasesAccess da = new DatabasesAccess();
+            IEnumerable<User> users = da.UsersDatabase(cmd);
             bool UserExist = users
                 .Any(x => x.username == username && x.deleted == false);
 
@@ -77,7 +115,7 @@ namespace ChatMessenger
             return UserExist;
         }
 
-        public bool CheckExistUser(IEnumerable<User> users, string username)
+        public static bool CheckExistUser(IEnumerable<User> users, string username)
         {
             bool UserExist = false;
 
@@ -92,7 +130,7 @@ namespace ChatMessenger
         }
 
 
-        public bool CheckUser(IEnumerable<dynamic> users, string username)
+        public static bool CheckUser(IEnumerable<dynamic> users, string username)
         {
             bool UserExist = false;
 
@@ -108,10 +146,11 @@ namespace ChatMessenger
 
 
 
-        public bool CheckExistUser(string username)
+        public static bool CheckExistUser(string username)
         {
             string cmd = "select * from users";
-            IEnumerable<User> users = da.ReturnUsersDatabase(cmd);
+            DatabasesAccess da = new DatabasesAccess();
+            IEnumerable<User> users = da.UsersDatabase(cmd);
 
             bool UserExist = users
                 .Any(x => x.username == username && x.deleted == false);
@@ -121,16 +160,17 @@ namespace ChatMessenger
 
 
 
-        public bool CheckExistMessage(int id)
+        public static bool CheckExistMessage(int id)
         {
             string cmd = "SELECT * FROM messages";
-            IEnumerable<User> messages = da.ReturnUsersDatabase(cmd);
+            DatabasesAccess da = new DatabasesAccess();
+            IEnumerable<User> messages = da.UsersDatabase(cmd);
             bool MessageExist = messages
                 .Any(x => x.id == id && x.deleted == false);
             return MessageExist;
         }
 
-        public void LoginScreenMessage()
+        public static void LoginScreenMessage()
         {
             Console.Clear();
             Console.ForegroundColor = ConsoleColor.Green;
@@ -138,7 +178,7 @@ namespace ChatMessenger
             Console.ForegroundColor = ConsoleColor.White;
             Console.Write("\n");
         }
-        public void IncorrectMessage()
+        public static void IncorrectMessage()
         {
             Console.Clear();
             Console.ForegroundColor = ConsoleColor.Red;
@@ -150,7 +190,7 @@ namespace ChatMessenger
 
 
 
-        public void UserDoesNotExistMessage()
+        public static void UserDoesNotExistMessage()
         {
             Console.Clear();
             Console.ForegroundColor = ConsoleColor.Red;
@@ -159,7 +199,7 @@ namespace ChatMessenger
             Console.Write("\n");
         }
 
-        public void ReturnBackMessage()
+        public static void ReturnBackMessage()
         {
             Console.Write("\n");
             Console.WriteLine("Press any key to return back");
@@ -168,7 +208,7 @@ namespace ChatMessenger
         }
 
 
-        public void MessageDoesNotExist()
+        public static void MessageDoesNotExist()
         {
             Console.Clear();
             Console.ForegroundColor = ConsoleColor.Red;
@@ -177,7 +217,7 @@ namespace ChatMessenger
             Console.Write("\n");
         }
 
-        public void MessageErrorConnection()
+        public static void MessageErrorConnection()
         {
             Console.ForegroundColor = ConsoleColor.Red;
             Console.WriteLine("The connection with the database was unsuccessful");
@@ -185,7 +225,7 @@ namespace ChatMessenger
             Console.Write("\n");
             Console.ReadKey();
             Console.Clear();
-            ls.LoginMethod();
+            LoginScreen.Login();
         }
     }
 }

@@ -7,21 +7,18 @@ namespace ChatMessenger
     class MainApplication
     {
 
-        DatabasesAccess da = new DatabasesAccess();
-        HelpMethods hm = new HelpMethods();
-        ApplicationsMenus am = new ApplicationsMenus();
-        Message me = new Message();
 
-        public void SendMessage()
+        public static void SendMessage()
         {
             string cmd = "select id, username from users where deleted = 0";
-            IEnumerable<User> users = da.ReturnUsersDatabase(cmd);
+            DatabasesAccess da = new DatabasesAccess();
+            IEnumerable<User> users = da.UsersDatabase(cmd);
             Console.Write("Type the username you want to exchange messages: ");
             string Username = Console.ReadLine();
-            bool UserExist = hm.CheckExistUser(users, Username);
+            bool UserExist = HelpMethods.CheckExistUser(users, Username);
             if (UserExist == true)
             {
-                int ReceiverId = hm.ReturnIdFromUsername(users, Username);
+                int ReceiverId = HelpMethods.ReturnIdFromUsername(users, Username);
                 int userId = ApplicationsMenus.userId;
                 Console.Clear();
                 Console.Write($"Write a message to ");
@@ -30,29 +27,30 @@ namespace ChatMessenger
                 Console.ForegroundColor = ConsoleColor.White;
                 Console.Write(", the maximun text limited to 250 characters");
                 Console.WriteLine("\n");
-                me.SendMessage(userId, ReceiverId);
+                HelpMethods.SendMessage(userId, ReceiverId);
             }
             else
             {
-                hm.UserDoesNotExistMessage();
+                HelpMethods.UserDoesNotExistMessage();
             }
         }
 
 
-        public void ViewMessage()
+        public static void ViewMessage()
         {
             string cmd = "select id, username from users";
-            IEnumerable<User> users = da.ReturnUsersDatabase(cmd);
+            DatabasesAccess da = new DatabasesAccess();
+            IEnumerable<User> users = da.UsersDatabase(cmd);
             Console.Write("Type the username you want to read the messages: ");
             string Username = Console.ReadLine();
-            bool existUser = hm.CheckExistUser(users, Username);
+            bool existUser = HelpMethods.CheckExistUser(users, Username);
             if (existUser == true)
             {
-                int ReceiverId = hm.ReturnIdFromUsername(users, Username);
+                int ReceiverId = HelpMethods.ReturnIdFromUsername(users, Username);
                 int userId = ApplicationsMenus.userId;
                 Console.Clear();
                 cmd = "SELECT * FROM messages WHERE deleted = 0;";
-                IEnumerable<Message> messages = da.ReturnMessagesDatabase(cmd);
+                IEnumerable<Message> messages = da.MessagesDatabase(cmd);
                 var myMessages = messages.Where(m => (m.receiverId == ReceiverId && m.senderId == userId) || (m.senderId == ReceiverId && m.receiverId == userId));
 
                 foreach (var m in myMessages)
@@ -72,25 +70,26 @@ namespace ChatMessenger
                         Console.WriteLine(m.messageData);
                     }
                 }
-                hm.ReturnBackMessage();
+                HelpMethods.ReturnBackMessage();
             }
         }
 
 
-        public void ViewNewMessage()
+        public static void ViewNewMessage()
         {
             Console.Clear();
             int SenderId;
             int userId = ApplicationsMenus.userId;
             string cmd = "select id, username from users";
-            IEnumerable<User> users = da.ReturnUsersDatabase(cmd);
+            DatabasesAccess da = new DatabasesAccess();
+            IEnumerable<User> users = da.UsersDatabase(cmd);
             cmd = "SELECT * FROM messages WHERE deleted = 0 AND readed = 0;";
-            IEnumerable<Message> messages = da.ReturnMessagesDatabase(cmd);
+            IEnumerable<Message> messages = da.MessagesDatabase(cmd);
             var myMessage = messages.Where(m => m.receiverId == userId).ToList();
             foreach (var m in myMessage)
             {
                 SenderId = m.senderId;
-                string Sender = hm.ReturnUsernameFromId(users, SenderId);
+                string Sender = HelpMethods.ReturnUsernameFromId(users, SenderId);
 
                 Console.Write("From: ");
                 Console.ForegroundColor = ConsoleColor.Green;
@@ -99,26 +98,27 @@ namespace ChatMessenger
                 Console.Write(" - Message: " + m.messageData);
                 da.ProcessMessagesDatabase(m.id, "Read_messages");
             }
-            hm.ReturnBackMessage();
+            HelpMethods.ReturnBackMessage();
         }
-        
 
 
-        public void ViewAllMessageByUser()
+
+        public static void ViewAllMessageByUser()
         {
             Console.Clear();
             int SenderId;
             int userId = ApplicationsMenus.userId;
             string cmd = "select id, username from users";
-            IEnumerable<User> users = da.ReturnUsersDatabase(cmd);
+            DatabasesAccess da = new DatabasesAccess();
+            IEnumerable<User> users = da.UsersDatabase(cmd);
             cmd = "SELECT * FROM messages WHERE deleted = 0;";
-            IEnumerable<Message> messages = da.ReturnMessagesDatabase(cmd);
+            IEnumerable<Message> messages = da.MessagesDatabase(cmd);
             var myMessage = messages.Where(m => m.receiverId == userId).ToList();
             foreach (var m in myMessage)
             {
 
                 SenderId = m.senderId;
-                string Sender = hm.ReturnUsernameFromId(users, SenderId);
+                string Sender = HelpMethods.ReturnUsernameFromId(users, SenderId);
 
                 Console.Write("From: ");
                 Console.ForegroundColor = ConsoleColor.Green;
@@ -128,11 +128,11 @@ namespace ChatMessenger
                 da.ProcessMessagesDatabase(m.id, "Read_messages");
                 Console.Write("\n");
             }
-            hm.ReturnBackMessage();
+            HelpMethods.ReturnBackMessage();
         }
 
 
-        public void ViewAllMessage()
+        public static void ViewAllMessage()
         {
             Console.Clear();
             int SenderId;
@@ -140,15 +140,16 @@ namespace ChatMessenger
             string Sender;
             string receiver;
             string cmd = "select id, username from users";
-            IEnumerable<User> users = da.ReturnUsersDatabase(cmd);
+            DatabasesAccess da = new DatabasesAccess();
+            IEnumerable<User> users = da.UsersDatabase(cmd);
             cmd = "SELECT * FROM messages WHERE deleted = 0";
-            IEnumerable<Message> messages = da.ReturnMessagesDatabase(cmd);
+            IEnumerable<Message> messages = da.MessagesDatabase(cmd);
             foreach (var m in messages)
             {
                 SenderId = m.senderId;
                 receiverId = m.receiverId;
-                Sender = hm.ReturnUsernameFromId(users, SenderId);
-                receiver = hm.ReturnUsernameFromId(users, receiverId);
+                Sender = HelpMethods.ReturnUsernameFromId(users, SenderId);
+                receiver = HelpMethods.ReturnUsernameFromId(users, receiverId);
 
                 Console.Write("Id: " + m.id + " - From: ");
                 Console.ForegroundColor = ConsoleColor.Green;
@@ -161,14 +162,15 @@ namespace ChatMessenger
                 Console.WriteLine(" - Message: " + m.messageData);
 
             }
-            hm.ReturnBackMessage();
+            HelpMethods.ReturnBackMessage();
         }
 
 
-        public void EditMessage()
+        public static void EditMessage()
         {
             string cmd = "SELECT * FROM messages WHERE deleted = 0";
-            IEnumerable<Message> messages = da.ReturnMessagesDatabase(cmd);
+            DatabasesAccess da = new DatabasesAccess();
+            IEnumerable<Message> messages = da.MessagesDatabase(cmd);
             Console.Write("Type the id of message you want to update: ");
 
             int id;
@@ -176,7 +178,7 @@ namespace ChatMessenger
             bool result = int.TryParse(ID, out id);
             if (result)
             {
-                bool MessageExist = hm.CheckExistMessage(id);
+                bool MessageExist = HelpMethods.CheckExistMessage(id);
                 if (MessageExist == true)
                 {
                     var senderId = messages
@@ -192,29 +194,30 @@ namespace ChatMessenger
                     Console.Clear();
                     Console.WriteLine($"Write the new message the maximun text limited to 250 characters");
                     Console.WriteLine("\n");
-                    me.SendMessage(SenderId, ReceiverId);
+                    HelpMethods.SendMessage(SenderId, ReceiverId);
                 }
                 else
                 {
-                    hm.MessageDoesNotExist();
+                    HelpMethods.MessageDoesNotExist();
                 }
             }
             else
             {
-                hm.IncorrectMessage();
+                HelpMethods.IncorrectMessage();
             }
         }
 
-        public void DeleteMessage()
+        public static void DeleteMessage()
         {
             Console.Write("Type the id of message you want to delete: ");
 
             int id;
             string ID = Console.ReadLine();
             bool result = int.TryParse(ID, out id);
+            DatabasesAccess da = new DatabasesAccess();
             if (result)
             {
-                bool MessageExist = hm.CheckExistMessage(id);
+                bool MessageExist = HelpMethods.CheckExistMessage(id);
                 if (MessageExist == true)
                 {
                     Console.Clear();
@@ -222,12 +225,12 @@ namespace ChatMessenger
                 }
                 else
                 {
-                    hm.MessageDoesNotExist();
+                    HelpMethods.MessageDoesNotExist();
                 }
             }
             else
             {
-                hm.IncorrectMessage();
+                HelpMethods.IncorrectMessage();
             }
 
         }
@@ -237,17 +240,18 @@ namespace ChatMessenger
 
 
 
-        public void CreateUser()
+        public static void CreateUser()
         {
             Dictionary<string, string> DBDictionary = new Dictionary<string, string>();
             Console.Write("Type the username: ");
             string username = Console.ReadLine();
-            bool userExist = hm.CheckNoExistUser(username);
+            bool userExist = HelpMethods.CheckNoExistUser(username);
+            DatabasesAccess da = new DatabasesAccess();
             if (userExist == false)
             {
-                string password = hm.SamePassword();
+                string password = HelpMethods.SamePassword();
                 Console.Clear();
-                string role = am.RoleMenu();
+                string role = ApplicationsMenus.RoleMenu();
                 DBDictionary.Add("@username", username);
                 DBDictionary.Add("@pass", password);
                 DBDictionary.Add("@role", role);
@@ -257,27 +261,29 @@ namespace ChatMessenger
 
 
 
-        public void ViewUser()
+        public static void ViewUser()
         {
             string cmd = "select username, role from users where deleted = 0";
-            IEnumerable<User> users = da.ReturnUsersDatabase(cmd);
+            DatabasesAccess da = new DatabasesAccess();
+            IEnumerable<User> users = da.UsersDatabase(cmd);
             Console.WriteLine("The users are:");
             Console.Write("\n");
             foreach (var u in users)
             {
                 Console.WriteLine("Username: " + u.username + " - " + "Role: " + u.role);
             }
-            hm.ReturnBackMessage();
+            HelpMethods.ReturnBackMessage();
         }
 
 
 
-        public void DeleteUser()
+        public static void DeleteUser()
         {
             Dictionary<string, string> DBDictionary = new Dictionary<string, string>();
             Console.Write("Type the username you want to delete: ");
             string username = Console.ReadLine();
-            bool UserExist = hm.CheckExistUser(username);
+            bool UserExist = HelpMethods.CheckExistUser(username);
+            DatabasesAccess da = new DatabasesAccess();
             if (UserExist == true)
             {
                 Console.Clear();
@@ -286,24 +292,25 @@ namespace ChatMessenger
             }
             else
             {
-                hm.UserDoesNotExistMessage();
+                HelpMethods.UserDoesNotExistMessage();
             }
         }
 
 
-        public void UpdateUserName()
+        public static void UpdateUserName()
         {
             Dictionary<string, string> DBDictionary = new Dictionary<string, string>();
             Console.Write("Type the username you want to update: ");
+            DatabasesAccess da = new DatabasesAccess();
             string username = Console.ReadLine();
             bool userNotExist;
-            bool UserExist = hm.CheckExistUser(username);
+            bool UserExist = HelpMethods.CheckExistUser(username);
             if (UserExist == true)
             {
                 Console.Clear();
                 Console.Write("Type a new username: ");
                 string newUsername = Console.ReadLine();
-                userNotExist = hm.CheckNoExistUser(newUsername);
+                userNotExist = HelpMethods.CheckNoExistUser(newUsername);
                 if (userNotExist == false)
                 {
                     Console.Clear();
@@ -314,21 +321,22 @@ namespace ChatMessenger
             }
             else
             {
-                hm.UserDoesNotExistMessage();
+                HelpMethods.UserDoesNotExistMessage();
             }
         }
 
 
-        public void UpdatePassword()
+        public static void UpdatePassword()
         {
             Dictionary<string, string> DBDictionary = new Dictionary<string, string>();
             Console.Write("Type the username you want to update: ");
             string username = Console.ReadLine();
-            bool UserExist = hm.CheckExistUser(username);
+            bool UserExist = HelpMethods.CheckExistUser(username);
+            DatabasesAccess da = new DatabasesAccess();
             if (UserExist == true)
             {
                 Console.Clear();
-                string password = hm.SamePassword();
+                string password = HelpMethods.SamePassword();
                 Console.Clear();
                 DBDictionary.Add("username", username);
                 DBDictionary.Add("newPassword", password);
@@ -336,29 +344,30 @@ namespace ChatMessenger
             }
             else
             {
-                hm.UserDoesNotExistMessage();
+                HelpMethods.UserDoesNotExistMessage();
             }
         }
 
 
 
-        public void UpdateRole()
+        public static void UpdateRole()
         {
             Dictionary<string, string> DBDictionary = new Dictionary<string, string>();
             Console.Write("Type the username you want to update: ");
             string username = Console.ReadLine();
-            bool UserExist = hm.CheckExistUser(username);
+            bool UserExist = HelpMethods.CheckExistUser(username);
+            DatabasesAccess da = new DatabasesAccess();
             if (UserExist == true)
             {
                 Console.Clear();
-                string role = am.RoleMenu();
+                string role = ApplicationsMenus.RoleMenu();
                 DBDictionary.Add("username", username);
                 DBDictionary.Add("newRole", role);
                 da.ProcedureDatabase(DBDictionary, "Update_Users_By_Role");
             }
             else
             {
-                hm.UserDoesNotExistMessage();
+                HelpMethods.UserDoesNotExistMessage();
             }
         }
     }
